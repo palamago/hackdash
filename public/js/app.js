@@ -190,7 +190,26 @@
     });
   };
 
-  page('/', loadProjects, cleanSearch, isotopeDashboard);
+  var updateTweets = function() {
+
+    window.setInterval(function() {
+      $('.project').each(function() {
+        var project = $(this);
+        var hashtag = $(this).find('.hashtag').text()
+        $.ajax({
+          url: 'http://search.twitter.com/search.json',
+          data: {
+            q: hashtag
+          },
+          dataType: 'jsonp',
+        }).done( function(data) {
+          project.find('.tweets p').html(data.results[0].text)
+        });
+      });
+    }, 60000);
+  };
+
+  page('/', loadProjects, cleanSearch, updateTweets, isotopeDashboard);
   page('/login', logIn);
   page('/search', loadSearchProjects, isotopeDashboard);
   page('/projects/create', createProject);

@@ -6,7 +6,7 @@
 
       h3
         a(href="/p/" + project.id, target="_blank") #{project.title}
-      p #{project.description}
+      p #{project.description} #{project.hashtag}
       a(href=project.link) #{project.link}
     
     .well-sidebar
@@ -16,6 +16,9 @@
 
       h6 State
       strong= project.status
+
+      h6 Hashtag
+      strong= project.hashtag
 
       h6 Tags
       ul
