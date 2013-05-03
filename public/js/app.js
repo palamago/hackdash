@@ -209,7 +209,7 @@
 
           project.find('.tweets a').html(link)
 
-          project.find('.tweets a').attr('src',link)
+          project.find('.tweets a').attr('href',link)
 
         });
       });
