@@ -6,7 +6,7 @@
         img(src=project.cover, alt='#{project.title}')
     .well-content
       h3 #{project.title}
-      small.hashtag #{project.hashtag}
+      small.hashtag ##{project.hashtag}
 
       | !{md(project.description)}
       each contributor in project.contributors

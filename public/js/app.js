@@ -199,14 +199,14 @@
         $.ajax({
           url: 'http://search.twitter.com/search.json',
           data: {
-            q: hashtag
+            q: "#" + hashtag
           },
           dataType: 'jsonp',
         }).done( function(data) {
           project.find('.tweets p').html(data.results[0].text)
         });
       });
-    }, 60000);
+    }, 10000);
   };
 
   page('/', loadProjects, cleanSearch, updateTweets, isotopeDashboard);
