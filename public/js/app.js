@@ -171,8 +171,9 @@
       $fullProject.html(res.body.html)
                   .modal('show');
       $('.tooltips').tooltip({});
+      setLastTweet();
     });
-    updateTweets();
+    
   };
 
   var followProject = function(ctx) {
@@ -191,10 +192,8 @@
     });
   };
 
-  var updateTweets = function() {
-
-    window.setInterval(function() {
-      $('.project').each(function() {
+  var setLastTweet = function () {
+    $('.project').each(function() {
         var project = $(this);
         var hashtag = $(this).find('.hashtag').text()
         $.ajax({
@@ -214,7 +213,6 @@
 
         });
       });
-    }, 10000);
   };
 
   page('/', loadProjects, cleanSearch, isotopeDashboard);
