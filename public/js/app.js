@@ -172,6 +172,7 @@
                   .modal('show');
       $('.tooltips').tooltip({});
     });
+    updateTweets();
   };
 
   var followProject = function(ctx) {
@@ -204,12 +205,19 @@
           dataType: 'jsonp',
         }).done( function(data) {
           project.find('.tweets p').html(data.results[0].text)
+
+          var link = 'https://twitter.com/'+data.results[0].from_user+'/status/'+data.results[0].id;
+
+          project.find('.tweets a').html(link)
+
+          project.find('.tweets a').attr('src',link)
+
         });
       });
     }, 10000);
   };
 
-  page('/', loadProjects, cleanSearch, updateTweets, isotopeDashboard);
+  page('/', loadProjects, cleanSearch, isotopeDashboard);
   page('/login', logIn);
   page('/search', loadSearchProjects, isotopeDashboard);
   page('/projects/create', createProject);
