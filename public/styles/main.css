@@ -4,9 +4,11 @@ body {
 
   margin: 0; font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 13px;
   line-height: 18px; color: #333333; background: #eeedee; padding-top:160px;
-background: #eeedee url('../images/header-2x.png');
-background-position: center 50px;
-background-repeat: no-repeat;}
+background: #eeedee url('../images/header-2x.png') no-repeat center center fixed;
+-webkit-background-size: 100%;
+-moz-background-size: 100%;
+-o-background-size: 100%;
+background-size: 100%;}
 
 
 
@@ -47,6 +49,7 @@ background-repeat: no-repeat;}
   text-transform: none;
   line-height: 1.5;
   padding-bottom: 8px;
+  margin-top: 1px;
   -webkit-font-smoothing: antialiased;
 }
 .icon-twitter:before {
@@ -61,9 +64,14 @@ background-repeat: no-repeat;}
 }
 .icon-edit:before {
   content: "\24";
+  font-size: 14px;
+  line-height: 7px;
 }
 .icon-logout:before {
   content: "\25";
+  font-size: 20px;
+  font-weight: bold;
+}
 }
 .icon-add:before {
   content: "\26";
@@ -88,6 +96,8 @@ background-repeat: no-repeat;}
 }
 .icon-trashcan:before {
   content: "\2e";
+  font-size: 18px;
+  line-height: 10px;
 }
 
 .icon-clock:before {
@@ -503,21 +513,16 @@ a.signup-github:hover {
 }
 
 .btn-custom {
-    border-radius: 0!important;
+    border-radius: 0px !important;
 
   background:#04d27d;
-  border-radius: 50px;
   color: #fff !important;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.00);
   box-shadow: none;
   font-weight: normal;
-      /* Firefox */
   -moz-transition: all 0.2s ease-in-out;
-  /* WebKit */
   -webkit-transition: all 0.2s ease-in-out;
-  /* Opera */
   -o-transition: all 0.2s ease-in-out;
-  /* Standard */
   transition: all 0.2s ease-in-out;
   padding: 10px 20px;
 }
@@ -529,7 +534,9 @@ a.signup-github:hover {
 }
 
 .btn-large {
-  padding: 13px;
+  padding: 14px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 
@@ -812,9 +819,17 @@ header .btn-link {
   opacity: 0.5
 }
 #searchInput {
-  background: #FFF;
   border: 1px solid #000; width:100%;
   padding:20px;
+  margin-top: 8px;
   color:#000;
-  border-radius: 0;
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  background-color: #ffffff;
+  border: 0px;
 }
+
+  /*#searchInput:before {
+     content: "\22";
+  }*/

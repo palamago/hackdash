@@ -45,8 +45,8 @@
         if(userExists(user, project.followers))
           .pull-right.follower
             a.btn.btn-link(href='/projects/unfollow/'+project._id)
-             span.icon-heart-broken(aria-hidden='true')
+             span(data-icon='"', aria-hidden='true')  Unfollow
         else 
           .pull-right.follower
             a.btn.btn-link(href='/projects/follow/'+project._id)
-             span.icon-heart(aria-hidden='true')
+             span(data-icon='#', aria-hidden='true')  Follow
