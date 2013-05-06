@@ -1,8 +1,12 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600,700);
 
 body {
+
   margin: 0; font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 13px;
-  line-height: 18px; color: #333333; background: #eeedee; padding-top:160px;}
+  line-height: 18px; color: #333333; background: #eeedee; padding-top:160px;
+background: #eeedee url('../images/header-2x.png');
+background-position: center 50px;
+background-repeat: no-repeat;}
 
 
 
@@ -33,18 +37,21 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-.icon-twitter, .icon-heart-broken, .icon-heart, .icon-edit, .icon-logout, .icon-add, .icon-search, .icon-status, .icon-collaborate, .icon-follow, .icon-noun_project_16183, .icon-noun_project_9202, .icon-trashcan {
+.icon-twitter, .icon-heart-broken, .icon-heart, .icon-edit, .icon-logout, .icon-add, .icon-search, .icon-status, .icon-collaborate, .icon-follow, .icon-noun_project_16183, .icon-noun_project_9202, .icon-trashcan, .icon-clock, .icon-join {
   font-family: 'bahackaton';
   speak: none;
+  font-size: 14px;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
+  line-height: 1.5;
+  padding-bottom: 8px;
   -webkit-font-smoothing: antialiased;
 }
 .icon-twitter:before {
   content: "\21";
+  font-size: 16px;
 }
 .icon-heart-broken:before {
   content: "\22";
@@ -82,6 +89,16 @@ body {
 .icon-trashcan:before {
   content: "\2e";
 }
+
+.icon-clock:before {
+  content: "\2f";
+}
+
+.icon-join:before {
+  content: "\30";
+  font-size: 24px;
+}
+
 
 /*@font-face {
 font-family: 'Entypo';
@@ -267,7 +284,7 @@ header .createProject {
   border-top:#EEE 1px solid;
 }
 
-[data-icon]::before {
+/*[data-icon]::before {
 font-family:              'Entypo';
 color:                        #000;
 font-weight:        400 !important;
@@ -277,7 +294,7 @@ position:                 relative;
 top:                           3px;
 font-size:                    30px;
 line-height:                     0;
-}
+}*/
 
 .divider {
   border-top: 3px solid;
@@ -627,7 +644,7 @@ h1,h2,h3,h4,h5,h6,p {
 .activity span:hover {
   opacity: 0.5;
 }
-.edit, .remove, .contributor, .follower {
+.edit, .remove, .contributor, .follower, .showtweet {
   border-left: 1px solid #EEE;
   text-align: center;
   font-weight: bold;
