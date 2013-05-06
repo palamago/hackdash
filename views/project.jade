@@ -20,13 +20,19 @@
         a.btn.btn-link(href='#')
           span(data-icon="6", aria-hidden="true")
 
+      .pull-right.showtweet
+        a.btn.btn-link(href)
+          span.icon-twitter(aria-hidden='true')
+
       .pull-right.remove
         if(user && isLeader(user, project))
-          a.btn.btn-link(href='/projects/remove/'+project._id) Remove
+          a.btn.btn-link(href='/projects/remove/'+project._id)
+            span.icon-trashcan(aria-hidden='true')
 
       .pull-right.edit
         if(user && isLeader(user, project))
-          a.btn.btn-link(href='/projects/edit/'+project._id) Edit
+          a.btn.btn-link(href='/projects/edit/'+project._id)
+            span.icon-edit(aria-hidden='true')
 
       if(user && !isLeader(user, project))
         if(userExists(user, project.contributors))
