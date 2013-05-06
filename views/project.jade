@@ -6,19 +6,25 @@
         img(src=project.cover, alt='#{project.title}')
     .well-content
       h3 #{project.title}
-      small ##{project.hashtag}
+      small.hashtag ##{project.hashtag}
 
-      | !{md(project.description)}
-      each contributor in project.contributors
-        img.avatar.tooltips(src=contributor.picture, title=contributor.name, rel="tooltip")
+      .description
+        | !{md(project.description)}
+        each contributor in project.contributors
+          img.avatar.tooltips(src=contributor.picture, title=contributor.name, rel="tooltip")
+
+      .tweets.hide
+        small Last Tweet:
+        p
+        a 
 
     .row-fluid
       .aging.activity.created_at
-        span.tooltips(data-icon="/", aria-hidden="true", rel="tooltip", title= moment(project.created_at).fromNow())
+        span.tooltips(data-icon="N", aria-hidden="true", rel="tooltip", title= moment(project.created_at).fromNow())
       
       .activity.people #{project.followers.length}
         a.btn.btn-link(href='#')
-          span(data-icon="#", aria-hidden="true")
+          span(data-icon="6", aria-hidden="true")
 
       .pull-right.showtweet
         a.btn.btn-link(href)
@@ -44,9 +50,8 @@
 
         if(userExists(user, project.followers))
           .pull-right.follower
-            a.btn.btn-link(href='/projects/unfollow/'+project._id)
-             span.icon-heart-broken(aria-hidden='true')
+            a.btn.btn-link(href='/projects/unfollow/'+project._id) Unfollow
         else 
           .pull-right.follower
-            a.btn.btn-link(href='/projects/follow/'+project._id)
-             span.icon-heart(aria-hidden='true')
+            a.btn.btn-link(href='/projects/follow/'+project._id) Follow
+
