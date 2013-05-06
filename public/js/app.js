@@ -46,6 +46,21 @@
     .get('/api/projects')
     .end(function(res){
       $projects.html(res.body.html);
+      
+      $('.project').each(function() {
+        var $project = $(this);
+        $project.find('.showtweet a').on('click', function(e){
+          var $description = $project.find('.description');
+          var $tweets = $project.find('.tweets');
+          $description.slideToggle();
+          $tweets.slideToggle();
+          return false;
+        });
+        setLastTweet($project, $project.find('.hashtag').text() );
+        window.setInterval(function(){
+          setLastTweet($project, $project.find('.hashtag').text() )
+        }, 300000);
+      })
       next();
     }); 
   };
@@ -171,7 +186,7 @@
       $fullProject.html(res.body.html)
                   .modal('show');
       $('.tooltips').tooltip({});
-      setLastTweet();
+      setLastTweet($fullProject, $fullProject.find('.hashtag').text());
     });
     
   };
@@ -190,29 +205,6 @@
     .end(function(res){
       page('/');
     });
-  };
-
-  var setLastTweet = function () {
-    $('.project').each(function() {
-        var project = $(this);
-        var hashtag = $(this).find('.hashtag').text()
-        $.ajax({
-          url: 'http://search.twitter.com/search.json',
-          data: {
-            q: "#" + hashtag
-          },
-          dataType: 'jsonp',
-        }).done( function(data) {
-          project.find('.tweets p').html(data.results[0].text)
-
-          var link = 'https://twitter.com/'+data.results[0].from_user+'/status/'+data.results[0].id;
-
-          project.find('.tweets a').html(link)
-
-          project.find('.tweets a').attr('href',link)
-
-        });
-      });
   };
 
   page('/', loadProjects, cleanSearch, isotopeDashboard);
@@ -249,6 +241,23 @@
       title: $('[name=title]'),
       description: $('[name=description]')
     };
+  };
+
+  var setLastTweet = function(project, hashtag) {
+    $.ajax({
+      url: 'http://search.twitter.com/search.json',
+      data: {
+        q: hashtag
+      },
+      dataType: 'jsonp',
+    }).done( function(data) {
+      if (data && data.results) {
+        project.find('.tweets p').html(data.results[0].text)
+        var link = 'https://twitter.com/'+data.results[0].from_user+'/status/'+data.results[0].id;
+        project.find('.tweets a').html("link")
+        project.find('.tweets a').attr('src',link)
+      }
+    });
   };
 
   var cleanErrors = function(){
