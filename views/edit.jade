@@ -14,6 +14,11 @@ form.ajaxForm.form-horizontal(action="/api/projects/edit/" + project.id, method=
       textarea(class="input-xlarge", id="description", name="description", rows="4", maxlength="400", placeholder="Description") #{project.description}
 
     .control-group
+     .controls.input-prepend
+      span.add-on #
+      input(type="text", class="input-xlarge", placeholder="Hashtag", name="hashtag", value=project.hashtag)
+
+    .control-group
       .controls
         #dragdrop 
           p Drag Photo Here

@@ -22,6 +22,11 @@ name="repo")
         textarea(class="input-xlarge", id="description", name="description", rows="4", maxlength="400", placeholder="Description")
 
     .control-group
+      .controls.input-prepend
+        span.add-on #
+        input(type="text", class="input-xlarge", placeholder="Hashtag", name="hashtag")
+
+    .control-group
       .controls
         #dragdrop 
           p Drag Photo Here

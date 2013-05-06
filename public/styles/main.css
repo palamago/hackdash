@@ -1,8 +1,14 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600,700);
 
 body {
+
   margin: 0; font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 13px;
-  line-height: 18px; color: #333333; background: #eeedee; padding-top:160px;}
+  line-height: 18px; color: #333333; background: #eeedee; padding-top:160px;
+background: #eeedee url('../images/header-2x.png') no-repeat center center fixed;
+-webkit-background-size: 100%;
+-moz-background-size: 100%;
+-o-background-size: 100%;
+background-size: 100%;}
 
 
 
@@ -11,6 +17,100 @@ body {
 }
 
 @font-face {
+  font-family: 'bahackaton';
+  src:url('font-face/bahackaton.eot');
+  src:url('font-face/bahackaton.eot?#iefix') format('embedded-opentype'),
+    url('font-face/bahackaton.woff') format('woff'),
+    url('font-face/bahackaton.ttf') format('truetype'),
+    url('font-face/bahackaton.svg#bahackaton') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Use the following CSS code if you want to use data attributes for inserting your icons */
+[data-icon]:before {
+  font-family: 'bahackaton';
+  content: attr(data-icon);
+  speak: none;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+.icon-twitter, .icon-heart-broken, .icon-heart, .icon-edit, .icon-logout, .icon-add, .icon-search, .icon-status, .icon-collaborate, .icon-follow, .icon-noun_project_16183, .icon-noun_project_9202, .icon-trashcan, .icon-clock, .icon-join {
+  font-family: 'bahackaton';
+  speak: none;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1.5;
+  padding-bottom: 8px;
+  margin-top: 1px;
+  -webkit-font-smoothing: antialiased;
+}
+.icon-twitter:before {
+  content: "\21";
+  font-size: 16px;
+}
+.icon-heart-broken:before {
+  content: "\22";
+}
+.icon-heart:before {
+  content: "\23";
+}
+.icon-edit:before {
+  content: "\24";
+  font-size: 14px;
+  line-height: 7px;
+}
+.icon-logout:before {
+  content: "\25";
+  font-size: 20px;
+  font-weight: bold;
+}
+}
+.icon-add:before {
+  content: "\26";
+}
+.icon-search:before {
+  content: "\27";
+}
+.icon-status:before {
+  content: "\28";
+}
+.icon-collaborate:before {
+  content: "\29";
+}
+.icon-follow:before {
+  content: "\2a";
+}
+.icon-noun_project_16183:before {
+  content: "\2b";
+}
+.icon-noun_project_9202:before {
+  content: "\2c";
+}
+.icon-trashcan:before {
+  content: "\2e";
+  font-size: 18px;
+  line-height: 10px;
+}
+
+.icon-clock:before {
+  content: "\2f";
+}
+
+.icon-join:before {
+  content: "\30";
+  font-size: 24px;
+}
+
+
+/*@font-face {
 font-family: 'Entypo';
 src: url('font-face/entypo-webfont.eot');
 src: url('font-face/entypo-webfont.eot?#iefix') format('embedded-opentype'),
@@ -20,7 +120,7 @@ url('font-face/entypo-webfont.svg#EntypoRegular') format('svg');
 font-weight: normal;
 font-style: normal;
 }
-
+*/
 header { 
   padding: 18px 0 17px 0; 
   background: #212529;
@@ -194,7 +294,7 @@ header .createProject {
   border-top:#EEE 1px solid;
 }
 
-[data-icon]::before {
+/*[data-icon]::before {
 font-family:              'Entypo';
 color:                        #000;
 font-weight:        400 !important;
@@ -204,7 +304,7 @@ position:                 relative;
 top:                           3px;
 font-size:                    30px;
 line-height:                     0;
-}
+}*/
 
 .divider {
   border-top: 3px solid;
@@ -413,21 +513,16 @@ a.signup-github:hover {
 }
 
 .btn-custom {
-    border-radius: 0!important;
+    border-radius: 0px !important;
 
   background:#04d27d;
-  border-radius: 50px;
   color: #fff !important;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.00);
   box-shadow: none;
   font-weight: normal;
-      /* Firefox */
   -moz-transition: all 0.2s ease-in-out;
-  /* WebKit */
   -webkit-transition: all 0.2s ease-in-out;
-  /* Opera */
   -o-transition: all 0.2s ease-in-out;
-  /* Standard */
   transition: all 0.2s ease-in-out;
   padding: 10px 20px;
 }
@@ -439,7 +534,9 @@ a.signup-github:hover {
 }
 
 .btn-large {
-  padding: 13px;
+  padding: 14px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 
@@ -554,7 +651,7 @@ h1,h2,h3,h4,h5,h6,p {
 .activity span:hover {
   opacity: 0.5;
 }
-.edit, .remove, .contributor, .follower {
+.edit, .remove, .contributor, .follower, .showtweet {
   border-left: 1px solid #EEE;
   text-align: center;
   font-weight: bold;
@@ -725,9 +822,17 @@ header .btn-link {
   opacity: 0.5
 }
 #searchInput {
-  background: #FFF;
   border: 1px solid #000; width:100%;
   padding:20px;
+  margin-top: 8px;
   color:#000;
-  border-radius: 0;
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  background-color: #ffffff;
+  border: 0px;
 }
+
+  /*#searchInput:before {
+     content: "\22";
+  }*/

@@ -8,6 +8,11 @@
         a(href="/p/" + project.id, target="_blank") #{project.title}
       p #{project.description}
       a(href=project.link) #{project.link}
+
+      .tweets
+        small Last Tweet:
+        p
+        a 
     
     .well-sidebar
 
@@ -16,6 +21,9 @@
 
       h6 State
       strong= project.status
+
+      h6 Hashtag
+      strong.hashtag ##{project.hashtag}
 
       h6 Tags
       ul

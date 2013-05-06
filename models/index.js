@@ -28,6 +28,7 @@ module.exports = function(app) {
     , "followers": [{ type: ObjectId, ref: 'User'}]
     , "cover": String
     , "link": String 
+    , "hashtag": String
     , "tags": [String]
     , "created_at": { type: Date, default: Date.now }
   });
