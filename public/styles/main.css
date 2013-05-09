@@ -860,15 +860,15 @@ header .btn-link {
 }
 #searchInput {
   border: 1px solid #000; width:100%;
-  padding:20px;
-  margin-top: 8px;
+  padding:25px;  margin-top: 0px;
   color:#000;
-  border-radius: 0px;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
+  border: 0px;
+  border-radius: 50px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
   background-color: #ffffff;
   border: 0px;
-}
+  }
 
   /*#searchInput:before {
      content: "\22";
