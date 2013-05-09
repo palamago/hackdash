@@ -3,12 +3,14 @@
   h3 Create project
 
 .modal-body
- 
-  a#ghImportBtn(href="#") Import from Github
+  .row-fluid
+   .span12
+    a#ghImportBtn(class="btn btn-large signup-btn signup-github",href="#")
+      i
+      | Import from Github
   .control-group.hidden.form-horizontal
     .controls
-      input(type="text", class="input-large", placeholder="repo user/name",
-name="repo")
+      input(type="text", class="input-large", placeholder="repo user/name",name="repo")
       button#searchGh.btn() Import
 
   form.ajaxForm.form-horizontal(action="/api/projects/create", method="POST")
@@ -24,7 +26,7 @@ name="repo")
     .control-group
       .controls.input-prepend
         span.add-on #
-        input(type="text", class="input-xlarge", placeholder="Hashtag", name="hashtag")
+        input(type="text", class="input-xlarge hashtag", placeholder="Hashtag", name="hashtag")
 
     .control-group
       .controls

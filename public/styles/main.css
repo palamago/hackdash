@@ -97,7 +97,7 @@ background-size: 100%;}
 .icon-trashcan:before {
   content: "\2e";
   font-size: 18px;
-  line-height: 10px;
+  line-height: 20px;
 }
 
 .icon-clock:before {
@@ -512,9 +512,37 @@ a.signup-github:hover {
 
 }
 
-.btn-custom {
-    border-radius: 0px !important;
+#ghImportBtn {
+    margin-left: 60px !important;
+    margin-bottom: 15px !important;
+}
 
+#ghImportBtn.signup-btn  {
+width: 179px;
+border-width: 1px;
+border-radius: 20px !important;
+font-size: 12px !important;
+display: block;
+font-weight: bold;
+padding: 6px 20px 6px 0;
+margin: 10px 0 15px;
+cursor: pointer;
+text-align: center;
+}
+
+#ghImportBtn.signup-btn i {
+      height: 18px;
+      width: 20px;
+      background-size: 20px;
+      display: inline-block;
+      vertical-align: text-top;
+      margin-right: 15px;
+      border-right: 1px solid rgba(0, 0, 0, 0.1);
+      padding-right: 30px;
+      box-shadow: 1px 0 0px rgba(255, 255, 255, 0.2); }
+
+.btn-custom {
+  border-radius: 50px;
   background:#04d27d;
   color: #fff !important;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.00);
@@ -672,6 +700,7 @@ h1,h2,h3,h4,h5,h6,p {
   border-radius: 50px;
 }
 
+
 .people {
   font-weight: bold;
   color: #d2d2d2;
@@ -716,8 +745,16 @@ h1,h2,h3,h4,h5,h6,p {
   border: none;
 }
 
+.input-xlarge {
+  width: 380px;
+}
+
+.hashtag {
+  width: 352px;
+}
+
 .form-horizontal .controls {
-  margin-left: 120px;
+  margin-left: 60px;
 }
 
 .well-header {
@@ -836,3 +873,25 @@ header .btn-link {
   /*#searchInput:before {
      content: "\22";
   }*/
+
+
+/*
+#ghImportBtn {
+    color: #4C4C4C !important;
+    background-color: #EAEAEA;
+    background-image: -moz-linear-gradient(#FAFAFA, #EAEAEA);
+    background-image: -o-linear-gradient(#FAFAFA, #EAEAEA);
+    background-image: -ms-linear-gradient(#FAFAFA, #EAEAEA);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FAFAFA), color-stop(1, #EAEAEA));
+    background-image: -webkit-linear-gradient(#FAFAFA, #EAEAEA);
+    border-color: #CACACA;
+    text-shadow: 0 1px 0 #CBCBCB; }
+#ghImportBtn:hover {
+  background-color:#EAEAEA;
+  border:#CACACA 2px solid; 
+}
+
+#ghImportBtn:before {
+      background: url('../images/icon-github.svg') 14px center no-repeat;
+      background-size: 30px auto;
+}*/
