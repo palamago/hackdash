@@ -6,7 +6,9 @@
         img(src=project.cover, alt='#{project.title}')
     .well-content
       h3 #{project.title}
-      small.hashtag ##{project.hashtag}
+      .showtweet
+        a(href="#")
+          small.hashtag ##{project.hashtag}
 
       .description
         | !{md(project.description)}
@@ -30,8 +32,8 @@
           a.btn.btn-link(href='/projects/follow/'+project._id)
             span.follow(data-icon='#', aria-hidden="true")
 
-      .pull-right.showtweet
-        a.btn.btn-link(href)
+      .pull-right.tweet-action
+        a.btn.btn-link(href="https://twitter.com/intent/tweet?hashtags=bahackaton," + project.hashtag, target="_blank")
           span.icon-twitter(aria-hidden='true')
 
       .pull-right.remove

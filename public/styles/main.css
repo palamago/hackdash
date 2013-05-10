@@ -691,7 +691,7 @@ h1,h2,h3,h4,h5,h6,p {
 .activity span:hover {
   opacity: 0.5;
 }
-.edit, .remove, .contributor, .follower, .showtweet {
+.edit, .remove, .contributor, .follower, .tweet-action {
   border-left: 1px solid #EEE;
   text-align: center;
   font-weight: bold;
