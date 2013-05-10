@@ -31,6 +31,7 @@
           span.icon-twitter(aria-hidden='true')
 
       .pull-right.remove
+        #{user.is_admin}
         if(user && isLeader(user, project))
           a.btn.btn-link(href='/projects/remove/'+project._id)
             span.icon-trashcan(aria-hidden='true')
@@ -43,16 +44,16 @@
       if(user && !isLeader(user, project))
         if(userExists(user, project.contributors))
           .pull-right.contributor
-            a.btn.btn-link(href='/projects/leave/'+project._id) Leave
+            a.btn.btn-link(href='/projects/leave/'+project._id) Salir
         else 
           .pull-right.contributor
-            a.btn.btn-link(href='/projects/join/'+project._id) Join
+            a.btn.btn-link(href='/projects/join/'+project._id) Sumarme
 
         if(userExists(user, project.followers))
           .pull-right.follower
             a.btn.btn-link(href='/projects/unfollow/'+project._id)
-             span(data-icon='"', aria-hidden='true')  Unfollow
+             span(data-icon='"', aria-hidden='true') Dejar de Seguir
         else 
           .pull-right.follower
             a.btn.btn-link(href='/projects/follow/'+project._id)
-             span(data-icon='#', aria-hidden='true')  Follow
+             span(data-icon='#', aria-hidden='true')  Seguir

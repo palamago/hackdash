@@ -5,7 +5,7 @@ block content
 	.row-fluid
 		.span3.profile.well.offset4
 			.well-content
-				h3 Edit Your Profile
+				h3 Editá tu Perfil
 
 				if(errors.length)
 					p An error ocurred:
@@ -16,10 +16,10 @@ block content
 					.control-group
 						img(class="avatar", src=user.picture)
 					.control-group
-						input(name="name", type='text', placeholder='Name', value=user.name)
+						input(name="name", type='text', placeholder='Nombre', value=user.name)
 					.control-group
 						input(name="email", type='text', placeholder='Email', value=user.email)
 					.control-group
-						textarea(name="bio", placeholder='Some about you') #{user.bio}
+						textarea(name="bio", placeholder='Algo sobre vos') #{user.bio}
 					.control-group
-						input.btn.btn-primary(type='submit', value="Save")
+						input.btn.btn-primary(type='submit', value="Guardar")

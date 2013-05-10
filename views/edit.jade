@@ -11,7 +11,7 @@ form.ajaxForm.form-horizontal(action="/api/projects/edit/" + project.id, method=
 
     .control-group
      .controls
-      textarea(class="input-xlarge", id="description", name="description", rows="4", maxlength="400", placeholder="Description") #{project.description}
+      textarea(class="input-xlarge", id="description", name="description", rows="4", maxlength="400", placeholder="Descripción") #{project.description}
 
     .control-group
      .controls.input-prepend
@@ -21,7 +21,7 @@ form.ajaxForm.form-horizontal(action="/api/projects/edit/" + project.id, method=
     .control-group
       .controls
         #dragdrop 
-          p Drag Photo Here
+          p Arrastrá tu foto aquí
           input(type="file", name="cover_fall", id="cover_fall")        
 
     .control-group
@@ -43,6 +43,6 @@ form.ajaxForm.form-horizontal(action="/api/projects/edit/" + project.id, method=
     
   .modal-footer
 
-    a.cancel.btn.btn-cancel(data-dismiss="modal") Cancel
-    button.btn.btn-custom(type="submit") Save changes
+    a.cancel.btn.btn-cancel(data-dismiss="modal") Cancelar
+    button.btn.btn-custom(type="submit") Guardar
 

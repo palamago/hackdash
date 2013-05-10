@@ -7,21 +7,22 @@
    .span12
     a#ghImportBtn(class="btn btn-large signup-btn signup-github",href="#")
       i
-      | Import from Github
-  .control-group.hidden.form-horizontal
-    .controls
-      input(type="text", class="input-large", placeholder="repo user/name",name="repo")
-      button#searchGh.btn() Import
+      | Importar de Github
+
+    .control-group.hidden.form-horizontal
+      .controls
+        input(type="text", class="input-large", placeholder="repo user/name",name="repo")
+        button#searchGh.btn() Import
 
   form.ajaxForm.form-horizontal(action="/api/projects/create", method="POST")
      
     .control-group
       .controls
-        input(type="text", class="input-xlarge", placeholder="Title", name="title")
+        input(type="text", class="input-xlarge", placeholder="Título", name="title")
 
     .control-group
       .controls
-        textarea(class="input-xlarge", id="description", name="description", rows="4", maxlength="400", placeholder="Description")
+        textarea(class="input-xlarge", id="description", name="description", rows="4", maxlength="400", placeholder="Descripción")
 
     .control-group
       .controls.input-prepend
@@ -50,5 +51,5 @@
     
     .modal-footer
 
-      a.cancel.btn.btn-cancel(data-dismiss="modal") Cancel
-      input.btn.primary.btn-custom(type="submit", value="Create project")
+      a.cancel.btn.btn-cancel(data-dismiss="modal") Cancelar
+      input.btn.primary.btn-custom(type="submit", value="Crear proyecto")

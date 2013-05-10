@@ -10,16 +10,16 @@
       a(href=project.link) #{project.link}
 
       .tweets
-        small Last Tweet:
+        small Último Tweet:
         p
         a 
     
     .well-sidebar
 
-      h6 Created
+      h6 Creado
       strong= moment(project.created_at).fromNow()
 
-      h6 State
+      h6 Estado
       strong= project.status
 
       h6 Hashtag
@@ -33,11 +33,11 @@
 
     .well-content
      
-      h5 Managed by
+      h5 Manejado por
       a(href="/users/" + project.leader.id)
         img.tooltips(src=project.leader.picture, title=project.leader.name)
 
-      h5 Contributors 
+      h5 Equipo 
       each contributor in project.contributors
         a(href="/users/" + contributor.id)
           img.tooltips(src=contributor.picture, title=contributor.name)
