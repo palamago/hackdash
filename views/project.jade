@@ -23,15 +23,18 @@
         span.tooltips(data-icon="/", aria-hidden="true", rel="tooltip", title= moment(project.created_at).fromNow())
       
       .activity.people #{project.followers.length}
-        a.btn.btn-link(href='#')
-          span(data-icon="#", aria-hidden="true")
+        if(userExists(user, project.followers))
+          a.btn.btn-link(href='/projects/unfollow/'+project._id)
+            span.unfollow(data-icon="#", data-icon-hover='"', aria-hidden="true")
+        else
+          a.btn.btn-link(href='/projects/follow/'+project._id)
+            span.follow(data-icon='#', aria-hidden="true")
 
       .pull-right.showtweet
         a.btn.btn-link(href)
           span.icon-twitter(aria-hidden='true')
 
       .pull-right.remove
-        #{user.is_admin}
         if(user && isLeader(user, project))
           a.btn.btn-link(href='/projects/remove/'+project._id)
             span.icon-trashcan(aria-hidden='true')
@@ -49,11 +52,4 @@
           .pull-right.contributor
             a.btn.btn-link(href='/projects/join/'+project._id) Sumarme
 
-        if(userExists(user, project.followers))
-          .pull-right.follower
-            a.btn.btn-link(href='/projects/unfollow/'+project._id)
-             span(data-icon='"', aria-hidden='true') Dejar de Seguir
-        else 
-          .pull-right.follower
-            a.btn.btn-link(href='/projects/follow/'+project._id)
-             span(data-icon='#', aria-hidden='true')  Seguir
+       

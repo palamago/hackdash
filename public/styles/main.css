@@ -39,6 +39,18 @@ background-size: 100%;}
   -webkit-font-smoothing: antialiased;
 }
 
+/* Use the following CSS code if you want to use data attributes for inserting your icons on hover */
+[data-icon-hover]:hover:before {
+  font-family: 'bahackaton';
+  content: attr(data-icon-hover);
+  speak: none;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+
 .icon-twitter, .icon-heart-broken, .icon-heart, .icon-edit, .icon-logout, .icon-add, .icon-search, .icon-status, .icon-collaborate, .icon-follow, .icon-noun_project_16183, .icon-noun_project_9202, .icon-trashcan, .icon-clock, .icon-join {
   font-family: 'bahackaton';
   speak: none;
