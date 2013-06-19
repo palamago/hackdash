@@ -25,7 +25,7 @@
         span.tooltips(data-icon="/", aria-hidden="true", rel="tooltip", title= moment(project.created_at).fromNow())
       
       .activity.people #{project.followers.length}
-        if(userExists(user, project.followers))
+        if(user && userExists(user, project.followers))
           a.btn.btn-link(href='/projects/unfollow/'+project._id)
             span.unfollow(data-icon="#", data-icon-hover='"', aria-hidden="true")
         else
