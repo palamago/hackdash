@@ -16,7 +16,7 @@ module.exports = function(app) {
 
   app.get('/api/projects/remove/:project_id', isAuth, isProjectLeader, removeProject, gracefulRes);
 
-  app.get('/api/projects/create', isAuth, setViewVar('statuses', app.get('statuses')), render('new_project'));
+  // app.get('/api/projects/create', isAuth, setViewVar('statuses', app.get('statuses')), render('new_project'));
 
   app.post('/api/cover', isAuth, uploadCover);
 
