@@ -38,6 +38,10 @@ module.exports = function(app) {
   app.get('/login', dashboardStack);
   app.get('/projects/create', dashboardStack);
   app.get('/projects/edit/:project_id', dashboardStack);
+
+  app.get('/projects/invite/:project_id', dashboardStack);
+  // app.get('/projects/join/:project_id/:invitation_hash', dashboardStack)
+
   app.get('/p/:project_id', dashboardStack);
   app.get('/search', dashboardStack);
   app.get('/logout', logout, redirect('/'));

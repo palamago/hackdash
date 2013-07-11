@@ -24,6 +24,12 @@
         input(class="input-xlarge", type="text", name="link", id="link", placeholder="Link", value=project.link)
 
       .control-group
+        .controls
+          label.checkbox
+            input(class="input-xlarge", type="checkbox", name="private_join", id="private_join", value="private_join", checked=project.private_join) 
+            span Private Join
+
+      .control-group
        .controls
         input(class="input-xlarge", type="text", name="tags", id="tags", placeholder="Tags", value=project.tags.join(','))
       

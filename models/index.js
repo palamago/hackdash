@@ -29,6 +29,7 @@ module.exports = function(app) {
     , "cover": String
     , "link": String 
     , "tags": [String]
+    , "private_join": { type: Boolean, default: false }
     , "created_at": { type: Date, default: Date.now }
   });
 
@@ -47,4 +48,12 @@ module.exports = function(app) {
   });
 
   mongoose.model('Dashboard', Dashboard);
+
+  var Invitation = new Schema({
+      "project": { type: ObjectId, required: true, ref: 'Project'}
+    , "email": { type: String, required: true}
+    , "hash" : { type: String, required: true}
+  })
+
+  mongoose.model('Invitation', Invitation);
 };

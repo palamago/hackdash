@@ -1,5 +1,6 @@
 var passport = require('passport')
   , mongoose = require('mongoose')
+  , crypto = require('crypto')
   , moment = require('moment')
   , config = require('../config.json')
   , _ = require('underscore')
@@ -7,7 +8,8 @@ var passport = require('passport')
   , request = require('superagent');
 
 var User = mongoose.model('User')
-  , Project = mongoose.model('Project');
+  , Project = mongoose.model('Project')
+  , Invitation = mongoose.model('Invitation');
 
 module.exports = function(app) {
   app.locals.canCreate = userCanCreate
@@ -24,6 +26,10 @@ module.exports = function(app) {
   app.get('/api/projects/leave/:project_id', isAuth, isProjectMember, leaveProject, loadProject, notify(app, 'project_leave'), gracefulRes()); 
   app.get('/api/projects/follow/:project_id', isAuth, followProject, loadProject, notify(app, 'project_follow'), gracefulRes()); 
   app.get('/api/projects/unfollow/:project_id', isAuth, isProjectFollower, unfollowProject, loadProject, notify(app, 'project_unfollow'), gracefulRes()); 
+
+  app.get('/api/projects/invite/:project_id', isAuth, canEdit, loadProject, render('invite'));
+  app.post('/api/projects/invite/:project_id', isAuth, canEdit, loadProject, saveInvitations, sendInvitations(app), gracefulRes()); 
+
   app.get('/api/p/:project_id', loadProject, canView, render('project_full'));
   app.get('/api/search', prepareSearchQuery, loadProjects, render('projects'));
   app.get('/api/users/profile', isAuth, loadUser, userIsProfile, render('edit_profile'));
@@ -91,6 +97,26 @@ var sendMail = function(app, type) {
 		next();
 	};
 };
+
+/**
+ * Send invitations emails
+ */
+
+var sendInvitations = function(app) {
+  return function(req, res, next) {
+    if(!app.get('config').mailer) return next();
+    for ( var i = 0; i < res.locals.invitations.length; i++){
+      app.emit('mail', {
+        type: 'invite',
+        from: req.user,
+        to: res.locals.invitations[i].email,
+        project: res.locals.project,
+        hash: res.locals.invitations[i].hash
+      });
+    }
+    next();
+  };
+}
 
 /*
  * Add current user template variable
@@ -332,6 +358,7 @@ var saveProject = function(req, res, next) {
     , link: req.body.link
     , status: req.body.status
     , tags: req.body.tags && req.body.tags.length ? req.body.tags.split(',') : []
+    , private_join: req.body.private_join
     , created_at: Date.now()
     , leader: req.user._id
     , followers: [req.user._id]
@@ -372,6 +399,9 @@ var updateProject = function(req, res, next) {
   project.status = req.body.status || project.status;
   project.cover = req.body.cover || project.cover;
   project.tags = (req.body.tags && req.body.tags.split(',')) || project.tags;
+  project.private_join = req.body.private_join;
+
+  console.log(req.body.private_join)
 
   project.save(function(err, project){
     if(err) return res.send(500);
@@ -400,6 +430,34 @@ var uploadCover = function(req, res, next) {
       });
     });
   }
+};
+
+/*
+ * Save Invitation
+ */
+
+var saveInvitations = function(req, res, next) {
+  var contributors = req.body.contributors.split(',')
+  var invitations = []
+  for ( var i = 0; i < contributors.length; i++){
+    var invitation_email = contributors[i].replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    if (invitation_email.length > 0 ) {
+      var invitation = new Invitation({
+          project: res.locals.project._id
+        , email: invitation_email
+        , hash: crypto.randomBytes(20).toString('hex')
+      });  
+      invitation.save(function(err, invitation) {
+        if(err) return res.send(500);
+        invitations.push(invitation)
+        if ( invitations.length == contributors.length) {
+          res.locals.invitations = invitations
+          next();  
+        }
+      });
+    }
+  }
+  
 };
 
 /*

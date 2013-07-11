@@ -1,0 +1,17 @@
+.row
+  form.span8.offset2.ajaxForm.form-horizontal(action="/api/projects/invite/" + project.id, method="POST")
+    div
+      h3 Invite Contributors
+
+
+    div
+      .control-group
+       .controls
+        textarea(class="input-xlarge", id="contributors", name="contributors", rows="4", maxlength="400", placeholder="Invite") 
+        div 
+          small Comma separated emails
+
+    .modal-footer.span6
+
+      a.cancel.btn.btn-cancel(data-dismiss="modal") Cancel
+      button.btn.btn-custom(type="submit") Invite

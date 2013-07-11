@@ -165,6 +165,22 @@
     });
   };
 
+  var inviteProject = function(ctx) {
+    superagent
+    .get('/api/projects/invite/' + ctx.params.project_id)
+    .end(function(res){
+    $('.tooltip').remove();
+      $main.html(res.body.html);
+      $('.ajaxForm').ajaxForm({
+        error: formError,
+        success: formSuccess,
+        resetForm: true,
+        beforeSubmit: formValidate
+      });
+
+    });
+  };
+
   var leaveProject = function(ctx) {
     request
     .get('/api/projects/leave/' + ctx.params.project_id)
@@ -245,6 +261,7 @@
   page('/projects/follow/:project_id', followProject);
   page('/projects/unfollow/:project_id', unfollowProject);
   page('/projects/join/:project_id', joinProject);
+  page('/projects/invite/:project_id', inviteProject);
   page('/projects/leave/:project_id', leaveProject);
   page('/users/profile', getMyProfile);
   page('/users/:user_id', getUserProfile);

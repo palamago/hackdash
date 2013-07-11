@@ -32,8 +32,9 @@
           .pull-right.contributor
             a.btn.btn-link(href='/projects/leave/'+project._id) Leave
         else 
-          .pull-right.contributor
-            a.btn.btn-link(href='/projects/join/'+project._id) Join
+          if !project.private_join
+            .pull-right.contributor
+              a.btn.btn-link(href='/projects/join/'+project._id) Join
 
         if (userExists(user, project.followers))
           .pull-right.follower
@@ -41,3 +42,7 @@
         else 
           .pull-right.follower
             a.btn.btn-link(href='/projects/follow/'+project._id) Follow
+      else 
+        if (user && project.private_join)
+          .pull-right.contributor
+            a.btn.btn-link(href='/projects/invite/' + project._id) Invite      
