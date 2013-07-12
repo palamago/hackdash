@@ -43,13 +43,11 @@ var sendInvitationMail = function(data) {
 	    to: data.to,
 	    subject: "[HackDash] " + data.from.name + " wants you to join " + data.project.title,
 			// TODO change this
-	    html: "<h1>HackDash</h1><p>Hi there! "+data.from.name+" wants you to join his project <strong>"+data.project.title+"</strong>.</p><p> <a href='" + data.hash + "'>" + data.hash + "</a>"
+	    html: "<h1>HackDash</h1><p>Hi there! "+data.from.name+" wants you to join his project <strong>"+data.project.title+"</strong>.</p>" + 
+	    "You must first <a href='" + data.base_url + "/login" + "'>login</a> to create a user and then enter this link: </p>" +
+	    "<a href='" + data.hash_url + "'>" + data.hash_url + "</a>"
 	};
-	console.log('todo bien')
-	console.log(data.from.email)
-	console.log(data.to)
 	transport.sendMail(mailOptions, function(error, response) {
-		console.log('algo')
 		if(error){
         	console.log(error);
 	    }else{

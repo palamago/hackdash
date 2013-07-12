@@ -53,6 +53,7 @@ module.exports = function(app) {
       "project": { type: ObjectId, required: true, ref: 'Project'}
     , "email": { type: String, required: true}
     , "hash" : { type: String, required: true}
+    , "created_at": { type: Date, default: Date.now }
   })
 
   mongoose.model('Invitation', Invitation);

@@ -104,14 +104,19 @@ var sendMail = function(app, type) {
 
 var sendInvitations = function(app) {
   return function(req, res, next) {
-    if(!app.get('config').mailer) return next();
+    var configuration = app.get('config');
+    if(!configuration.mailer) return next();
+    var base_url = 'http://' + configuration.host;
+    if (configuration.port)
+      base_url += ':' + configuration.port
     for ( var i = 0; i < res.locals.invitations.length; i++){
       app.emit('mail', {
         type: 'invite',
         from: req.user,
         to: res.locals.invitations[i].email,
         project: res.locals.project,
-        hash: res.locals.invitations[i].hash
+        base_url: base_url,
+        hash_url: base_url + '/projects/join/' + res.locals.project.id + '/' + res.locals.invitations[i].hash
       });
     }
     next();
@@ -400,8 +405,6 @@ var updateProject = function(req, res, next) {
   project.cover = req.body.cover || project.cover;
   project.tags = (req.body.tags && req.body.tags.split(',')) || project.tags;
   project.private_join = req.body.private_join;
-
-  console.log(req.body.private_join)
 
   project.save(function(err, project){
     if(err) return res.send(500);

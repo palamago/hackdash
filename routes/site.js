@@ -1,11 +1,13 @@
 
 var passport = require('passport')
   , config = require('../config.json')
-  , mongoose = require('mongoose');
+  , mongoose = require('mongoose')
+  , moment = require('moment');
 
 var User = mongoose.model('User')
   , Project = mongoose.model('Project')
-  , Dashboard = mongoose.model('Dashboard');
+  , Dashboard = mongoose.model('Dashboard')
+  , Invitation = mongoose.model('Invitation');
 
 module.exports = function(app) {
 
@@ -40,7 +42,7 @@ module.exports = function(app) {
   app.get('/projects/edit/:project_id', dashboardStack);
 
   app.get('/projects/invite/:project_id', dashboardStack);
-  // app.get('/projects/join/:project_id/:invitation_hash', dashboardStack)
+  app.get('/projects/join/:project_id/:invitation_hash', join, redirect('/'))
 
   app.get('/p/:project_id', dashboardStack);
   app.get('/search', dashboardStack);
@@ -173,4 +175,25 @@ var loadDashboard = function(req, res, next) {
 var logout = function(req, res, next) {
   req.logout();
   next();
+};
+
+/*
+ * Join
+ */
+
+var join = function(req, res, next) {
+  if (!req.user) 
+    return res.send(404);
+  Invitation.findOne({project: req.params.project_id, hash: req.params.invitation_hash})
+  .populate('project')
+  .exec(function(err, invitation) {
+    if (err || !invitation) 
+      return res.send(404);
+    if ( moment(Date()).subtract('days', 2).isAfter(invitation.created_at) )
+      return res.send(401)
+    Project.update({_id: req.params.project_id}, { $addToSet : { 'contributors': req.user.id }}, function(err){
+      if(err) return res.send(500);
+      next();
+    });
+  });
 };
