@@ -1,4 +1,4 @@
-.project(data-contribs=project.contributors.length, data-name=project.title, data-date=("undefined" == typeof project.created_at) ? 0 : project.created_at, id="project-" + project.id, class=project.status)
+.project(data-contribs=project.contributors.length, data-name=project.title, data-date=("undefined" == typeof project.created_at) ? 0 : project.created_at, id="project-" + project.id, class=project.category)
   
   .well
     .well-header
@@ -13,8 +13,8 @@
         h6 Created
         strong= moment(project.created_at).fromNow()
 
-        h6 State
-        strong= project.status
+        h6 Category
+        strong= project.category
 
         h6 Tags
         ul

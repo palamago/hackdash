@@ -7,11 +7,16 @@
 
   var $projects = $('#projects')
     , $project = $('.project')
+    , $contents = $('#contents')
+    , $listContents = $('#listContents')
+    , $content = $('.content')
     , $ajaxForm = $('.ajaxForm')
     , $newProject = $('#newProject')
     , $editProject = $('#editProject')
     , $main = $('#main')
     , $fullProject = $('#fullProject')
+    , $newContent = $('#newContent')
+    , $editContent = $('#editContent')
     , $logIn = $('#logIn')
     , $modals = $('.modal')
     , $searchInput = $('#searchInput')
@@ -56,6 +61,15 @@
     request
     .get('/api/search?' + ctx.querystring)
     .end(function(res){ 
+      $main.html(res.body.html);
+      next();
+    }); 
+  };
+
+  var loadContents = function(ctx, next) {
+    request
+    .get('/api/contents')
+    .end(function(res){
       $main.html(res.body.html);
       next();
     }); 
@@ -114,6 +128,7 @@
 
   var createProject = function(ctx) {
     $main.html($newProject.html());
+    $newContent.addClass('hide');
     initSelect2();
     initImageDrop();
 
@@ -198,6 +213,54 @@
     });
   };
 
+  var createContent = function(ctx) {
+    $main.html($newContent.html());
+    $newProject.addClass('hide');
+    initSelect2();
+    initImageDrop();
+
+    $('.ajaxFormContent').ajaxForm({
+      error: formError,
+      success: formSuccessContents,
+      resetForm: true,
+      beforeSubmit: formValidate
+    });
+
+  };
+
+  var editContent = function(ctx) {
+	alert('c');
+    superagent
+    .get('/admin/content/edit/' + ctx.params.content_id)
+    .end(function(res){
+    $('.tooltip').remove();
+      $main.html(res.body.html);
+      initSelect2();
+      initImageDrop();
+
+      $('.ajaxForm').ajaxForm({
+        error: formError,
+        success: formSuccess,
+        resetForm: true,
+        beforeSubmit: formValidate
+      });
+
+    });
+  };
+
+  var removeContent = function(ctx) {
+    if (window.confirm("This action will remove the content. Are you sure?")){
+      superagent
+        .get('/admin/content/remove/' + ctx.params.content_id)
+        .end(function(res){
+          page('/');
+        });
+    }
+    else 
+      page('/');
+  };
+
+
   var getMyProfile = function() {
     request
     .get('/api/users/profile')
@@ -246,6 +309,9 @@
   page('/projects/unfollow/:project_id', unfollowProject);
   page('/projects/join/:project_id', joinProject);
   page('/projects/leave/:project_id', leaveProject);
+  page('/contents/', loadContents);
+  page('/admin/content/create', createContent);
+  page('/content/edit/:content_id', editContent);
   page('/users/profile', getMyProfile);
   page('/users/:user_id', getUserProfile);
   page('/p/:project_id', projectInfo);
@@ -298,6 +364,11 @@
     cleanErrors();
     $dragdrop.css('background', 'none').children('input').show(); 
     page('/');
+  };
+  var formSuccessContents = function(){
+    cleanErrors();
+    $dragdrop.css('background', 'none').children('input').show(); 
+    page('/contents/');
   };
   
   var formValidate = function(arr, $form, options){
@@ -365,6 +436,10 @@ text:project.language}]);
 
   $logo.click(function(){
     page.stop();
+  });  
+
+  $listContents.click(function(){
+    page('/contents/');
   });
   
   var cover_path = null;

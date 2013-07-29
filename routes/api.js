@@ -7,7 +7,9 @@ var passport = require('passport')
   , request = require('superagent');
 
 var User = mongoose.model('User')
-  , Project = mongoose.model('Project');
+  , Project = mongoose.model('Project')
+  , Content = mongoose.model('Content')
+  , Category = mongoose.model('Category');
 
 module.exports = function(app) {
   app.locals.canCreate = userCanCreate
@@ -17,7 +19,7 @@ module.exports = function(app) {
   app.post('/api/projects/create', isAuth, canCreate, validateProject, saveProject, notify(app, 'project_created'), gracefulRes());
   app.get('/api/projects/remove/:project_id', isAuth, canRemove, removeProject, notify(app, 'project_removed'), gracefulRes());
   app.get('/api/projects/create', isAuth, canCreate, setViewVar('statuses', app.get('statuses')), render('new_project'));
-  app.post('/api/cover', isAuth, canEdit, uploadCover);
+  app.post('/api/cover', isAuth, uploadCover);
   app.get('/api/projects/edit/:project_id', isAuth, setViewVar('statuses', app.get('statuses')), canEdit, loadProject, render('edit'));
   app.post('/api/projects/edit/:project_id', isAuth, canEdit, validateProject, updateProject, notify(app, 'project_edited'), gracefulRes());
   app.get('/api/projects/join/:project_id', isAuth, joinProject, followProject, loadProject, notify(app, 'project_join'), sendMail(app, 'join'), gracefulRes()); 
@@ -25,6 +27,9 @@ module.exports = function(app) {
   app.get('/api/projects/follow/:project_id', isAuth, followProject, loadProject, notify(app, 'project_follow'), gracefulRes()); 
   app.get('/api/projects/unfollow/:project_id', isAuth, isProjectFollower, unfollowProject, loadProject, notify(app, 'project_unfollow'), gracefulRes()); 
   app.get('/api/p/:project_id', loadProject, canView, render('project_full'));
+
+  app.get('/api/contents', loadContents, render('contents'));
+  app.get('/api/c/:content_id', loadContent, canView, render('content_full'));
   app.get('/api/search', prepareSearchQuery, loadProjects, render('projects'));
   app.get('/api/users/profile', isAuth, loadUser, userIsProfile, render('edit_profile'));
   app.get('/api/users/:user_id', loadUser, findUser, render('profile'));
@@ -287,6 +292,43 @@ var loadProject = function(req, res, next) {
   });
 };
 
+
+/*
+ * Load all contents
+ */
+
+var loadContents = function(req, res, next) {
+  Content.find(req.query || {})
+  .exec(function(err, contents) {
+    if(err) return res.send(500);
+    res.locals.contents = contents;
+    res.locals.user = req.user;
+    res.locals.canView = true;
+    res.locals.canEdit = req.user.is_admin;
+    res.locals.canRemove = req.user.is_admin;
+    res.locals.userExists = userExistsInArray;
+    next();
+  });
+};
+
+/*
+ * Load specific content
+ */
+
+var loadContent = function(req, res, next) {
+  Content.findById(req.params.content_id)
+  .exec(function(err, content) {
+    if(err || !content) return res.send(500);
+    res.locals.content = content;
+    res.locals.user = req.user;
+    res.locals.canEdit = req.user.is_admin;
+    res.locals.canRemove = req.user.is_admin;
+    res.locals.disqus_shortname = config.disqus_shortname;
+    res.locals.userExists = userExistsInArray;
+    next();
+  });
+};
+
 var userExistsInArray = function(user, arr){
   return _.find(arr, function(u){
     return (u.id == user.id);
@@ -330,13 +372,13 @@ var saveProject = function(req, res, next) {
       title: req.body.title
     , description: req.body.description
     , link: req.body.link
-    , status: req.body.status
     , tags: req.body.tags && req.body.tags.length ? req.body.tags.split(',') : []
     , created_at: Date.now()
     , leader: req.user._id
     , followers: [req.user._id]
     , contributors: [req.user._id]
     , cover: req.body.cover
+    , video: req.body.video
   });
 
   project.save(function(err, project){
@@ -371,6 +413,7 @@ var updateProject = function(req, res, next) {
   project.link = req.body.link || project.link;
   project.status = req.body.status || project.status;
   project.cover = req.body.cover || project.cover;
+  project.video = req.body.video || project.video;
   project.tags = (req.body.tags && req.body.tags.split(',')) || project.tags;
 
   project.save(function(err, project){
@@ -387,11 +430,11 @@ var updateProject = function(req, res, next) {
 var uploadCover = function(req, res, next) {
   var cover = (req.files && req.files.cover && req.files.cover.type.indexOf('image/') != -1 
     && '/uploads/' + req.files.cover.path.split('/').pop() + '.' + req.files.cover.name.split('.').pop());
-
+  console.log(cover);
   if(req.files && req.files.cover && req.files.cover.type.indexOf('image/') != -1) {
     var tmp_path = req.files.cover.path
-      , target_path = './public' + cover;
-
+      , target_path = __dirname+'/../public' + cover;
+    console.log(tmp_path);
     fs.rename(tmp_path, target_path, function(err) {
       if (err) throw err;
       fs.unlink(tmp_path, function() {

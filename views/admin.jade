@@ -2,13 +2,33 @@ extends layout
 
 block content
   .row
-    form.span4.offset4(method="post", action="/admin")
-      fieldset
-        legend Admin
-        label(for="title") Title
-        input#title(name="title", type="text", value=dashboard.title)
-        label(for="description") Description
-        textarea#description(maxlength="140", name="description")= dashboard.description
-        label(for="background") Background color
-        input#background(name="background", type="text", value=dashboard.background)
+    span12.createContent.pull-left(style="margin:10px")
+      a.btn(href="/admin/content/create") New content
+      a#listContents.btn(href="#") Edit contents
+  .row#main
+    form.span12(method="post", action="/admin")
+      legend General settings
+      fieldset.row
+       div.span4
+         label(for="title") Title
+         input#title(name="title", type="text", value=dashboard.title)
+         label(for="description") Description Markdown
+         textarea#description(maxlength="640", name="description")= dashboard.description
+         label(for="background") Background color
+         input#background(name="background", type="text", value=dashboard.background)
+         label(for="credits") Footer Credits
+         input#credits(name="credits", type="text", value=dashboard.credits)
+         label(for="license") Footer License
+         input#license(name="license", type="text", value=dashboard.license)
+       div.span4
+         label(for="help") Help Markdown
+         textarea#help(maxlength="640", name="help", style="width: 99%; height:300px")= dashboard.help
+      div.row
         button.btn(type="submit") Save
+        
+
+   #newProject.hide
+      include new_project
+
+   #newContent.hide
+      include new_content

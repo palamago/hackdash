@@ -5,6 +5,7 @@ var passport = require('passport')
 
 var User = mongoose.model('User')
   , Project = mongoose.model('Project')
+  , Content = mongoose.model('Content')
   , Dashboard = mongoose.model('Dashboard');
 
 module.exports = function(app) {
@@ -36,9 +37,11 @@ module.exports = function(app) {
   app.get('/', checkProfile, dashboardStack);
   app.get('/live', liveStack);
   app.get('/login', dashboardStack);
+  app.get('/admin/content/edit/:content_id', dashboardStack);
   app.get('/projects/create', dashboardStack);
   app.get('/projects/edit/:project_id', dashboardStack);
   app.get('/p/:project_id', dashboardStack);
+  app.get('/c/:content_id', dashboardStack);
   app.get('/search', dashboardStack);
   app.get('/logout', logout, redirect('/'));
   
@@ -137,6 +140,18 @@ var loadProject = function(req, res, next) {
     if(err || !project) return res.send(500);
     res.locals.project = project;
     res.locals.user = req.user;
+    next();
+  });
+};
+/*
+ * Load specific content
+ */
+
+var loadContent = function(req, res, next) {
+  Content.findById(req.params.content_id)
+  .exec(function(err, content) {
+    if(err || !content) return res.send(500);
+    res.locals.content = project;
     next();
   });
 };
