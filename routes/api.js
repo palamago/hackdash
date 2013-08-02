@@ -413,8 +413,8 @@ var updateProject = function(req, res, next) {
   project.link = req.body.link || project.link;
   project.status = req.body.status || project.status;
   project.cover = req.body.cover || project.cover;
-  project.video = req.body.video || project.video;
-  project.tags = (req.body.tags && req.body.tags.split(',')) || project.tags;
+  project.video = req.body.video;
+  project.tags = (req.body.tags && req.body.tags.split(','));
 
   project.save(function(err, project){
     if(err) return res.send(500);
