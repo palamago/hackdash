@@ -14,6 +14,7 @@
     , $newProject = $('#newProject')
     , $editProject = $('#editProject')
     , $main = $('#main')
+    , $mainAdmin = $('#mainAdmin')
     , $fullProject = $('#fullProject')
     , $newContent = $('#newContent')
     , $editContent = $('#editContent')
@@ -70,7 +71,7 @@
     request
     .get('/api/contents')
     .end(function(res){
-      $main.html(res.body.html);
+      $mainAdmin.html(res.body.html);
       next();
     }); 
   };
@@ -197,6 +198,15 @@
     });
   };
 
+  var contentInfo = function(ctx) {
+    request
+    .get('/api/c/' + ctx.params.content_id)
+    .end(function(res){
+      $main.html(res.body.html);
+      $('.tooltips').tooltip({});
+    });
+  };
+
   var followProject = function(ctx) {
     request
     .get('/api/projects/follow/' + ctx.params.project_id)
@@ -214,7 +224,7 @@
   };
 
   var createContent = function(ctx) {
-    $main.html($newContent.html());
+    $mainAdmin.html($newContent.html());
     $newProject.addClass('hide');
     initSelect2();
     initImageDrop();
@@ -229,18 +239,17 @@
   };
 
   var editContent = function(ctx) {
-	alert('c');
     superagent
     .get('/admin/content/edit/' + ctx.params.content_id)
     .end(function(res){
     $('.tooltip').remove();
-      $main.html(res.body.html);
+      $mainAdmin.html(res.body.html);
       initSelect2();
       initImageDrop();
 
       $('.ajaxForm').ajaxForm({
         error: formError,
-        success: formSuccess,
+        success: formSuccessContents,
         resetForm: true,
         beforeSubmit: formValidate
       });
@@ -315,6 +324,7 @@
   page('/users/profile', getMyProfile);
   page('/users/:user_id', getUserProfile);
   page('/p/:project_id', projectInfo);
+  page('/c/:content_id', contentInfo);
   page('/auth/persona', personaLogin);
 
   page();

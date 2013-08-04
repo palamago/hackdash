@@ -8,6 +8,8 @@ var User = mongoose.model('User')
   , Content = mongoose.model('Content')
   , Dashboard = mongoose.model('Dashboard');
 
+
+
 module.exports = function(app) {
 
   /*
@@ -18,6 +20,7 @@ module.exports = function(app) {
     loadUser, 
     loadProviders,
     loadDashboard,
+    loadContents,
     setViewVar('statuses', app.get('statuses')),
     setViewVar('disqus_shortname', config.disqus_shortname),
     render('dashboard')
@@ -41,7 +44,7 @@ module.exports = function(app) {
   app.get('/projects/create', dashboardStack);
   app.get('/projects/edit/:project_id', dashboardStack);
   app.get('/p/:project_id', dashboardStack);
-  app.get('/c/:content_id', dashboardStack);
+  app.get('/c/:content_id', loadContent, dashboardStack);
   app.get('/search', dashboardStack);
   app.get('/logout', logout, redirect('/'));
   
@@ -151,7 +154,21 @@ var loadContent = function(req, res, next) {
   Content.findById(req.params.content_id)
   .exec(function(err, content) {
     if(err || !content) return res.send(500);
-    res.locals.content = project;
+    res.locals.content = content;
+    next();
+  });
+};
+
+
+var loadContents = function(req, res, next) {
+  Content.find(req.query || {})
+  .exec(function(err, contents) {
+    if(err) return res.send(500);
+    res.locals.contents = contents;
+    res.locals.user = req.user;
+    res.locals.canView = true;
+    res.locals.canEdit = false;
+    res.locals.canRemove = false;
     next();
   });
 };
