@@ -6,8 +6,8 @@
     .well-content
       a(href='/contents/c/'+content._id) 
         h3 #{content.title}
-
-      | !{md(content.description)}
+      p
+        | !{md(content.abstract)}
     
     .row-fluid.footer-box
       .aging.activity.created_at
@@ -15,4 +15,5 @@
 
       .pull-right.edit
         if (true)
-          a.btn.btn-link(href='/admin/content/edit/'+content._id) Edit
+          a.btn.btn-link(href='/admin/content/edit/'+content._id) #{__('Edit')}
+          a.btn.btn-link(href='/admin/content/remove/'+content._id) #{__('Remove')}
