@@ -17,13 +17,14 @@ module.exports = function(app) {
   var dashboardStack = [
     loadUser, 
     loadProviders,
+    loadContents,
     setViewVar('statuses', app.get('statuses')),
     render('dashboard')
   ];
 
   app.get('/install', isAuth, loadUser, loadDashboard, notInstalled, render('installed'));
-  app.get('/admin', isAuth, isAdmin, loadUser, loadDashboard, render('admin'));
-  app.post('/admin', isAuth, isAdmin, loadUser, saveDashboard, render('admin'));
+  app.get('/admin', isAuth, isAdmin, loadUser, loadContents, loadDashboard, render('admin'));
+  app.post('/admin', isAdmin, loadUser, saveDashboard, render('admin'));
   app.get('/admin/c/:content_id', loadContent, isAdmin, loadDashboard, render('content_full'));
   //app.get('/admin/content/create', isAuth, isAdmin, loadDashboard, render('new_content'));
   app.post('/admin/content/create', isAuth, isAdmin, validateContent, saveContent, notify(app, 'content_created'), gracefulRes());
@@ -140,8 +141,8 @@ var saveDashboard = function(req, res, next) {
       dash.title = opts.title || dash.title;
       dash.description = opts.description || dash.description;
       dash.background = opts.background || dash.background;
-      dash.credits = opts.credits || dash.credits;
-      dash.license = opts.license || dash.license;
+      dash.credits = opts.credits;
+      dash.license = opts.license;
       dash.help = opts.help || dash.help;
       dash.save(function(err, doc){
         res.locals.dashboard = doc;

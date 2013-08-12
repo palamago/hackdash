@@ -29,7 +29,7 @@ module.exports = function(app) {
   app.get('/api/p/:project_id', loadProject, canView, render('project_full'));
 
   app.get('/api/contents', loadContents, render('contents'));
-  app.get('/api/c/:content_id', loadContent, canView, render('content_full'));
+  app.get('/api/c/:content_id', loadContent, render('content_full'));
   app.get('/api/search', prepareSearchQuery, loadProjects, render('projects'));
   app.get('/api/users/profile', isAuth, loadUser, userIsProfile, render('edit_profile'));
   app.get('/api/users/:user_id', loadUser, findUser, render('profile'));
@@ -321,10 +321,10 @@ var loadContent = function(req, res, next) {
     if(err || !content) return res.send(500);
     res.locals.content = content;
     res.locals.user = req.user;
-    res.locals.canEdit = req.user.is_admin;
-    res.locals.canRemove = req.user.is_admin;
+    res.locals.canEdit = true;
+    res.locals.canRemove = true;
     res.locals.disqus_shortname = config.disqus_shortname;
-    res.locals.userExists = userExistsInArray;
+    res.locals.userExists = true;
     next();
   });
 };
@@ -410,7 +410,7 @@ var updateProject = function(req, res, next) {
 
   project.title = req.body.title || project.title;
   project.description = req.body.description || project.description;
-  project.link = req.body.link || project.link;
+  project.link = req.body.link;
   project.status = req.body.status || project.status;
   project.cover = req.body.cover || project.cover;
   project.video = req.body.video;
