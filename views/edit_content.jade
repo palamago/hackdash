@@ -1,34 +1,35 @@
-.row
-  form.span8.offset2.ajaxForm.form-horizontal(action="/admin/content/edit/" + content.id, method="POST")
-    div
-      h3 Edit content
+.container
+ .row
+  .span4.offset1.span-center
+ 
+   h3 #{__('Edit content')}
 
-    div
-      
+   form.ajaxForm(action="/admin/content/edit/" + content.id, method="POST")
+     .form-content
+       .control-group
+       .controls
+        input(type="text", class="input-xlarge", placeholder="#{__('Title')}", name="title", value=content.title)
+
       .control-group
        .controls
-        input(type="text", class="input-xlarge", placeholder="Title", name="title", value=content.title)
-
-      .control-group
-       .controls
-        textarea(class="input-xlarge", id="description", name="description", rows="4", maxlength="400", placeholder="Description") #{content.description}
+        textarea(class="input-xlarge", id="description", name="description", rows="4", maxlength="400", placeholder="#{__('Description')}") #{content.description}
 
       .control-group
         .controls
           #dragdrop 
-            p Drag Photo Here
+            p #{__('Drag Photo Here')}
             input(class="input-xlarge",type="file", name="cover_fall", id="cover_fall")        
 
       .control-group
        .controls
-        input(class="input-xlarge", type="text", name="link", id="link", placeholder="Link", value=content.link)
+        input(class="input-xlarge", type="text", name="link", id="link", placeholder="#{__('Link')}", value=content.link)
 
       .control-group
        .controls
-        input(class="input-xlarge", type="text", name="tags", id="tags", placeholder="Tags", value=content.tags.join(','))
+        input(class="input-xlarge", type="text", name="tags", id="tags", placeholder="#{__('Tags')}", value=content.tags.join(','))
       
-    .modal-footer.span6
+    .form-actions
 
-      a.cancel.btn.btn-cancel(data-dismiss="modal") Cancel
-      button.btn.btn-custom(type="submit") Save changes
+      a.cancel.btn.btn-cancel(data-dismiss="modal") #{__('Cancel')}
+      button.btn.btn-custom(type="submit") #{__('Save changes')}
 

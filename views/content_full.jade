@@ -5,13 +5,11 @@
 
       h3
         a(href="/c/" + content.id, target="_blank") #{content.title}
-      p #{content.description}
+      p 
+        | !{md(content.description)}
       a(href=content.link) #{content.link}
     .row-fluid
       .well-sidebar.span4
-
-        h6 Created
-        strong= moment(content.created_at).fromNow()
 
         h6 Tags
         ul

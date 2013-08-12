@@ -1,5 +1,4 @@
 .project.tooltips.span4(title=project.category, data-id=project.id, data-contribs=project.contributors.length, data-name=project.title, data-date=("undefined" == typeof project.created_at) ? 0 : project.created_at, id="project-" + project.id, class=project.category)
-  
   .well
     .cover.shadow 
       if(project.cover)
@@ -9,7 +8,7 @@
 
       | !{md(project.description)}
       each contributor in project.contributors
-        img.avatar.tooltips(src=contributor.picture, data-id=contributor.id, title=contributor.name, rel="tooltip")
+        img.img-circle.avatar.tooltips(src=contributor.picture, data-id=contributor.id, title=contributor.name, rel="tooltip")
 
     .row-fluid.footer-box
       .aging.activity.created_at
@@ -21,23 +20,23 @@
 
       .pull-right.remove
         if (canRemove(user, project))
-          a.btn.btn-link(href='/projects/remove/'+project._id) Remove
+          a.btn.btn-link(href='/projects/remove/'+project._id) #{__('Remove')}
 
       .pull-right.edit
         if (canEdit(user, project))
-          a.btn.btn-link(href='/projects/edit/'+project._id) Edit
+          a.btn.btn-link(href='/projects/edit/'+project._id) #{__('Edit')}
 
       if (user && !isLeader(user, project))
         if (userExists(user, project.contributors))
           .pull-right.contributor
-            a.btn.btn-link(href='/projects/leave/'+project._id) Leave
+            a.btn.btn-link(href='/projects/leave/'+project._id) #{__('Leave')}
         else 
           .pull-right.contributor
-            a.btn.btn-link(href='/projects/join/'+project._id) Join
+            a.btn.btn-link(href='/projects/join/'+project._id) #{__('Join')}
 
         if (userExists(user, project.followers))
           .pull-right.follower
-            a.btn.btn-link(href='/projects/unfollow/'+project._id) Unfollow
+            a.btn.btn-link(href='/projects/unfollow/'+project._id) #{__('Unfollow')}
         else 
           .pull-right.follower
-            a.btn.btn-link(href='/projects/follow/'+project._id) Follow
+            a.btn.btn-link(href='/projects/follow/'+project._id) #{__('Follow')}

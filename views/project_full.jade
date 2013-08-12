@@ -1,44 +1,56 @@
-.project(data-contribs=project.contributors.length, data-name=project.title, data-date=("undefined" == typeof project.created_at) ? 0 : project.created_at, id="project-" + project.id, class=project.category)
+.container
+ .project(data-contribs=project.contributors.length, data-name=project.title, data-date=("undefined" == typeof project.created_at) ? 0 : project.created_at, id="project-" + project.id, class=project.category)
   
   .well
     .well-header
-
+      .pagination.pull-right
+        ul
+         li
+          a.btn-facebook(target="_blank", href="http://www.facebook.com/sharer.php?u=" + "/p/" + project.id + "&t=" + project.title)
+            i.icon-facebook
+         li
+          a.btn-twitter(target="_blank", href="http://twitter.com/home?status=" + project.title)
+            i.icon-twitter
+         li
+          a.btn-google-plus(target="_blank", href="https://m.google.com/app/plus/x/?v=compose&content=" + project.title) 
+            i.icon-google-plus
       h3
         a(href="/p/" + project.id, target="_blank") #{project.title}
-      p #{project.description}
+      | !{md(project.description)}
       a(href=project.link) #{project.link}
+
     .row-fluid
       .well-sidebar.span4
 
-        h6 Created
+        h6 #{__('Created')}
         strong= moment(project.created_at).fromNow()
 
-        h6 Category
+        h6 #{__('Category')}
         strong= project.category
 
-        h6 Tags
+        h6 #{__('Tags')}
         ul
           each tag in project.tags
             li= tag
 
-      div.well.span4#video
+      div.well.span8#video
           - if(project.video!='')
             iframe(width="100%", height=215, src="" + project.video, frameborder="0", allowfullscreen)
-      .well-content.span4
+      .well-content.span8
         .span4
-          h5 Managed by
+          h5 #{__('Managed by')}
           a(href="/users/" + project.leader.id)
-            img.tooltips(src=project.leader.picture, title=project.leader.name, rel="tooltip")
+            img.img-circle.tooltips(src=project.leader.picture, title=project.leader.name, rel="tooltip")
         .span4
-          h5 Contributors 
+          h5 #{__('Contributors')} 
           each contributor in project.contributors
             a(href="/users/" + contributor.id)
-              img.tooltips(src=contributor.picture, title=contributor.name, rel="tooltip")
+              img.img-circle.tooltips(src=contributor.picture, title=contributor.name, rel="tooltip")
         .span4
-          h5 #{project.followers.length} Likes
+          h5 #{project.followers.length} #{__('Likes')}
           each follower in project.followers
             a(href="/users/" + follower.id)
-              img.tooltips(src=follower.picture, title=follower.name, rel="tooltip")
+              img.img-circle.tooltips(src=follower.picture, title=follower.name, rel="tooltip")
 
     if disqus_shortname
       #disqus_thread.well-header

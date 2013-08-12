@@ -2,11 +2,7 @@ extends layout
 
 block content
 
-  h1 Now you are the dashboard admin. You'll be redirected in about 3 seconds...
+  h1 #{__('Installed')}
 
 block scripts
 
-  script()
-    setTimeout(function(){
-      window.location = window.location.replace('install','');
-    }, 3000);

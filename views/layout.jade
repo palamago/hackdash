@@ -5,18 +5,19 @@ html
     title= title
     link(rel="shortcut icon", href="/favicon.ico", type="image/x-icon")
     link(rel="icon", href="/favicon.ico", type="image/x-icon")
-    //link(rel='stylesheet', href='/styles/bootstrap.min.css')
-    link(rel='stylesheet', href='http://bootswatch.com/cosmo/bootstrap.min.css')
+    link(rel='stylesheet', href='/styles/bootstrap.min.css')
+    //link(rel='stylesheet', href='http://bootswatch.com/flatly/bootstrap.min.css')
+    //link(rel='stylesheet', href='http://gcba.github.io/BAstrap/assets/css/bootstrap.css')
     link(rel='stylesheet', href='/styles/bootstrap-responsive.min.css')
     link(rel='stylesheet', href='/styles/select2.css')
     //link(rel='stylesheet', href='/styles/main.css')
+    //link(rel='stylesheet', href='/styles/social-buttons.css')
     link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Lato:300,400,700')
     link(rel='stylesheet', href='//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css')
 
-  body
+  body(style="background: #{dashboard.background}")
 
   
     include header
-    .container(style="margin-bottom:45px;")#page
-      block content
+    block content
     include footer

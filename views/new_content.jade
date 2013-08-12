@@ -1,6 +1,6 @@
 .span-center
   div.boxxy
-    h3.header Create content
+    h3.header #{__('Create content')}
 
     div
      
@@ -11,31 +11,31 @@
           
           .control-group
             .controls
-              input(type="text", class="input-block-level", placeholder="Title", name="title")
+              input(type="text", class="input-block-level", placeholder="#{__('Title')}", name="title")
 
           .control-group
             .controls
-              textarea(class="input-block-level", id="abstract", name="abstract", rows="4", maxlength="128", placeholder="Abstract")
+              textarea(class="input-block-level", id="abstract", name="abstract", rows="4", maxlength="128", placeholder="#{__('Abstract')}")
 
           .control-group
             .controls
-              textarea(class="input-block-level", id="description", name="description", rows="4", maxlength="400", placeholder="Description")
+              textarea(class="input-block-level", id="description", name="description", rows="4", maxlength="400", placeholder="#{__('Description')}")
 
           .control-group
             .controls
               #dragdrop 
-                p Drag Photo Here
+                p #{__('Drag Photo Here')}
                 input(type="file", name="cover_fall", id="cover_fall")        
 
           .control-group
             .controls
-              input(class="input-block-level", type="text", name="link", id="link", placeholder="Link")
+              input(class="input-block-level", type="text", name="link", id="link", placeholder="#{__('Link')}")
 
           .control-group
             .controls
-              input(class="input-block-level", type="text", name="tags", id="tags", placeholder="Tags")
+              input(class="input-block-level", type="text", name="tags", id="tags", placeholder="#{__('Tags')}")
 
         .form-actions
 
-          input.btn.primary.btn-success.pull-left(type="submit", value="Crear contenido")
-          a.cancel.btn.btn-cancel.pull-right(data-dismiss="modal") Cancelar
+          input.btn.primary.btn-success.pull-left(type="submit", value="#{__('Create content')}")
+          a.cancel.btn.btn-cancel.pull-right(data-dismiss="modal") #{__('Cancel')}
