@@ -1,30 +1,38 @@
 extends layout
 
 block content
-  .row
-    span12.createContent.pull-left(style="margin:10px")
-      a.btn(href="/admin/content/create") New content
-      a#listContents.btn(href="#") Edit contents
-  .row#main
+ div#main
+  .navbar.navbar-inverse
+    .navbar-inner(style="-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;")
+      .container
+        ul.nav
+          li
+            a(href="/admin/content/create") #{__('New content')}
+          li
+            a#listContents(href="#") #{__('Edit contents')}
+          li
+            a(href="/projects/create") #{__('New project')}
+  .container(style="padding-bottom:20px;") 
+   .row#mainAdmin
     form.span12(method="post", action="/admin")
-      legend General settings
+      h3 #{__('General settings')}
       fieldset.row
        div.span4
-         label(for="title") Title
+         label(for="title") #{__('Title')}
          input#title(name="title", type="text", value=dashboard.title)
-         label(for="description") Description Markdown
+         label(for="description") #{__('Description')} (Markdown)
          textarea#description(maxlength="640", name="description")= dashboard.description
-         label(for="background") Background color
+         label(for="background") #{__('Background')} 
          input#background(name="background", type="text", value=dashboard.background)
-         label(for="credits") Footer Credits
-         input#credits(name="credits", type="text", value=dashboard.credits)
-         label(for="license") Footer License
-         input#license(name="license", type="text", value=dashboard.license)
+         label(for="credits") #{__('Footer credits')} (Markdown)
+         textarea#credits(name="credits") #{dashboard.credits}
+         label(for="license") #{__('Footer license')} 
+         textarea#license(name="license") #{dashboard.license}
        div.span4
-         label(for="help") Help Markdown
+         label(for="help") #{__('Help')} (Markdown)
          textarea#help(maxlength="640", name="help", style="width: 99%; height:300px")= dashboard.help
       div.row
-        button.btn(type="submit") Save
+        button.btn(type="submit") #{__('Save')} 
         
 
    #newProject.hide
