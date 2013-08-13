@@ -1,8 +1,16 @@
 .container
  .project(data-contribs=project.contributors.length, data-name=project.title, data-date=("undefined" == typeof project.created_at) ? 0 : project.created_at, id="project-" + project.id, class=project.category)
   
-  .well
-    .well-header
+  .row-fluid
+      //http://player.vimeo.com/video/22439234
+      //http://www.youtube.com/watch?v=wHxU6lgSDMA
+      if getVideoEmbed(project.video)
+          .span6.pull-right#video(style="margin:14px 5px 4px 15px")
+            iframe.img-rounded(width="100%", rel="" + getVideoEmbed(project.video), height=333, src="" + getVideoEmbed(project.video), frameborder="0", allowfullscreen)
+      if getGalleryEmbed(project.gallery)
+          .span6.pull-right#gallery(style="margin:14px 5px 4px 15px")
+            iframe.img-rounded.imgur-album(width="100%", height=333, frameborder="0", src="" + project.gallery + "/embed")
+      
       .pagination.pull-right
         ul
          li
@@ -16,27 +24,18 @@
             i.icon-google-plus
       h3
         a(href="/p/" + project.id, target="_blank") #{project.title}
+      each tag in project.tags
+        span.label.label-inverse= tag
       | !{md(project.description)}
       a(href=project.link) #{project.link}
 
-    .row-fluid
-      .well-sidebar.span4
-
-        h6 #{__('Created')}
+      h6 #{__('Created')}
         strong= moment(project.created_at).fromNow()
 
-        h6 #{__('Category')}
+      h6 #{__('Category')}
         strong= project.category
 
-        h6 #{__('Tags')}
-        ul
-          each tag in project.tags
-            li= tag
-
-      div.well.span8#video
-          - if(project.video!='')
-            iframe(width="100%", height=215, src="" + project.video, frameborder="0", allowfullscreen)
-      .well-content.span8
+      .span5
         .span4
           h5 #{__('Managed by')}
           a(href="/users/" + project.leader.id)

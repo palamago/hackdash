@@ -405,7 +405,7 @@ var updateContent = function(req, res, next) {
 	  //var content = req.content;
 	  content.title = req.body.title;
 	  content.description = req.body.description;
-	  content.link = req.body.link || content.link;
+	  content.link = req.body.link;
 	  content.tags = (req.body.tags && req.body.tags.split(','));
 	  content.cover = req.body.cover || content.cover;
 
@@ -463,6 +463,7 @@ var saveProject = function(req, res, next) {
     , contributors: [req.user._id]
     , cover: req.body.cover
     , video: req.body.video
+    , gallery: req.body.gallery
   });
 
   project.save(function(err, project){
@@ -498,6 +499,7 @@ var updateProject = function(req, res, next) {
   project.status = req.body.status || project.status;
   project.cover = req.body.cover || project.cover;
   project.video = req.body.video;
+  project.gallery = req.body.gallery;
   project.tags = (req.body.tags && req.body.tags.split(','));
 
   project.save(function(err, project){

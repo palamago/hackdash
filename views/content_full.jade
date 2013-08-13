@@ -1,20 +1,20 @@
 .content(data-name=content.title, data-date=("undefined" == typeof content.created_at) ? 0 : content.created_at, id="content-" + content.id, class=content.category)
-  
-  .well
-    .well-header
+ .container
+  .row-fluid
+
+      if content.link
+        span6.pull-right(style="margin:15px")
+          iframe.img-rounded.imgur-album(width="100%", height="333", frameborder="0", src="" + content.link + "/embed")
 
       h3
         a(href="/c/" + content.id, target="_blank") #{content.title}
+      each tag in content.tags
+        span.label.label-inverse= tag
       p 
         | !{md(content.description)}
-      a(href=content.link) #{content.link}
-    .row-fluid
-      .well-sidebar.span4
+      //a(href=content.link) #{content.link}
 
-        h6 Tags
-        ul
-          each tag in content.tags
-            li= tag
+        
 
 
       
