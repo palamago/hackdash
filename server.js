@@ -6,9 +6,18 @@
 var express = require('express')
   , passport = require('passport')
   , mongoose = require('mongoose')
+  , i18n = require('i18n')
   , MongoStore = require('connect-mongo')(express)
   , config = require('./config.json')
   , http = require('http');
+
+
+// i18n configure
+i18n.configure({
+  locales: ['es'],
+  cookie: 'hackdash-locale',
+  directory: './locales'
+});
 
 /*
  * DB
@@ -41,6 +50,7 @@ app.get('config').db.url})
   }));
   app.use(passport.initialize());
   app.use(passport.session());
+  app.use(i18n.init);
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
   app.use(function(req, res) {
