@@ -61,7 +61,7 @@
 	},
 	"Hello %s": "Hola %s",
 	"Acceder con ": "Acceder con ",
-	"Import": "Import",
+	"Importar": "Import",
 	"Video": "Video",
 	"Installed": "Installed",
 	"Edit profile": "Edit profile",

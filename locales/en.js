@@ -2,7 +2,6 @@
 	"Hello": "Hola",
 	"Login": "Acceder",
 	"Log in to create a project": "Acceder para crear un proyecto",
-	"Hello": "Hola",
 	"Admin": "Admin",
 	"An error ocurred": "Hubo un error",
 	"Abstract": "Resumen",
@@ -47,18 +46,25 @@
 	"Save": "Guardar",
 	"Save changes": "Guardar",
 	"Some about you": "Algo sobre tí",
-	"General settings": "General settings",
+	"General settings": "Configuración general",
 	"Background color": "Color de fondo",
 	"Background": "Color de fondo",
-	"Description": "Descripcion",
-	"Help": "Ayuda",
+	"Description Markdown": "Descripcion (Markdown)",
+	"Help Markdown": "Ayuda (Markdown)",
 	"Footer credits": "Créditos al pie",
 	"Footer license": "Licencia al pie",
-	"Remove": "Remove",
+	"Remove": "Eliminar",
 	"tree": "arbol",
 	"There is one monkey in the %s": {
 		"one": "There is one monkey in the %s",
 		"other": "There are %d monkeys in the %s"
 	},
-	"Hello %s": "Hola %s"
+	"Hello %s": "Hola %s",
+	"Acceder con ": "Acceder con ",
+	"Importar": "Import",
+	"Video": "Video",
+	"Installed": "Installed",
+	"Edit profile": "Edit profile",
+	"Help": "Help",
+	"Import": "Import"
 }
