@@ -22,9 +22,9 @@ block content
           .btn-group
             if(user)
               if(user && project.followers.indexOf(user._id) == -1)
-                a.follow.btn(href='/api/projects/'+ project._id +'/follow') follow
+                a.follow.btn(href='/api/projects/'+ project._id +'/follow') #{__('follow')}
               else
-                a.unfollow.btn(href='/api/projects/'+ project._id +'/unfollow') unfollow
+                a.unfollow.btn(href='/api/projects/'+ project._id +'/unfollow') #{__('unfollow')}
 
             if(user && project.leader.id == user.id)
-              a.btn(href='/projects/edit/'+project._id) Edit
+              a.btn(href='/projects/edit/'+project._id) #{__('Edit')}

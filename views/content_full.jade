@@ -1,0 +1,25 @@
+.content(data-name=content.title, data-date=("undefined" == typeof content.created_at) ? 0 : content.created_at, id="content-" + content.id, class=content.category)
+  
+  .well
+    .well-header
+
+      h3
+        a(href="/c/" + content.id, target="_blank") #{content.title}
+      p 
+        | !{md(content.description)}
+      a(href=content.link) #{content.link}
+    .row-fluid
+      .well-sidebar.span4
+
+        h6 Tags
+        ul
+          each tag in content.tags
+            li= tag
+
+
+      
+    if disqus_shortname
+      #disqus_thread.well-header
+      script(src="/js/disqus.js", disqus_shortname=disqus_shortname)
+      
+        

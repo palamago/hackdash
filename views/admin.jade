@@ -1,14 +1,42 @@
 extends layout
 
 block content
-  .row
-    form.span4.offset4(method="post", action="/admin")
-      fieldset
-        legend Admin
-        label(for="title") Title
-        input#title(name="title", type="text", value=dashboard.title)
-        label(for="description") Description
-        textarea#description(maxlength="140", name="description")= dashboard.description
-        label(for="background") Background color
-        input#background(name="background", type="text", value=dashboard.background)
-        button.btn(type="submit") Save
+ div#main
+  .navbar.navbar-inverse
+    .navbar-inner(style="-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;")
+      .container
+        ul.nav
+          li
+            a(href="/admin/content/create") #{__('New content')}
+          li
+            a#listContents(href="#") #{__('Edit contents')}
+          li
+            a(href="/projects/create") #{__('New project')}
+  .container(style="padding-bottom:20px;") 
+   .row#mainAdmin
+    form.span12(method="post", action="/admin")
+      h3 #{__('General settings')}
+      fieldset.row
+       div.span4
+         label(for="title") #{__('Title')}
+         input#title(name="title", type="text", value=dashboard.title)
+         label(for="description") #{__('Description')} (Markdown)
+         textarea#description(maxlength="640", name="description")= dashboard.description
+         label(for="background") #{__('Background')} 
+         input#background(name="background", type="text", value=dashboard.background)
+         label(for="credits") #{__('Footer credits')} (Markdown)
+         textarea#credits(name="credits") #{dashboard.credits}
+         label(for="license") #{__('Footer license')} 
+         textarea#license(name="license") #{dashboard.license}
+       div.span4
+         label(for="help") #{__('Help')} (Markdown)
+         textarea#help(maxlength="640", name="help", style="width: 99%; height:300px")= dashboard.help
+      div.row
+        button.btn(type="submit") #{__('Save')} 
+        
+
+   #newProject.hide
+      include new_project
+
+   #newContent.hide
+      include new_content

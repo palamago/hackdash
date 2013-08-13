@@ -1,25 +1,29 @@
-header(style="background: #{dashboard.background}")
-  .container
-    form.formSearch
-      i.icon-large.icon-search
-      input.search-query.input-large#searchInput(type='text')
-    .createProject.pull-right
-        if(user)
-          a.btn-profile(href="/users/profile")
-            img.avatar(src=user.picture + '?s=50').tooltips(rel='tooltip', data-placement='bottom', data-original-title='Edit profile')
-  
-    a.logo(href="/")= title
-    h1 #{dashboard.title}
-    p.lead #{dashboard.description}
-    - if (user) {
-      - if (canCreate(user)) {
-        a.btn.btn-large(href="/projects/create") New project
-      - }
-    - } else { 
-      - if (stageCanCreate()) {
-        a.btn.btn-large(href="/login") Login to create a project
-      - } else {
-        a.btn.btn-large(href="/login") Login
-      - }
-    - }
+.navbar(style="margin-bottom:0;")
+    .navbar-inner(style="-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;")
+      .container
+        a.brand(href="/")
+         h3(style="line-height:20px; margin:0 0 0 0;padding:0 0 0 0;") #{dashboard.title} 
+        i.badge.badge-inverse.pull-left(style="margin:10px 10px 0px -5px;") #{dashboard.description}
+        // span.pull-left.label #{dashboard.description}
+        .container.pull-left
+         ul.nav#contents
+          each cont, index in contents
+            - if (true)
+              li 
+               a(href="/c/" + cont._id) #{cont.title}
+            
+        .navbar-content
+          
+          if(user)
+            a.btn-small.btn-profile.pull-right(href="/users/profile")
+              img.avatar.img-circle.pull-right(style="margin:5px", width=32, src=user.picture + '?s=50').tooltips(rel='tooltip', data-placement='bottom', data-original-title='#{__('Edit profile')}')
+            if (user.is_admin)
+              a.btn.btn-small.pull-right(href="/admin", rel=route) #{__('Admin')}
+ 
+          form(style="margin:10px").formSearch.pull-right
+            i.icon.icon-large.icon-search
+            input.search-query#searchInput(type='text')
     
+  
+
+  

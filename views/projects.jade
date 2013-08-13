@@ -1,5 +1,23 @@
-#projects.row
-  each project, index in projects
-    - if (canView(user, project))
+.navbar.navbar-inverse
+  .navbar-inner(style="-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;")
+     .container
+        ul.nav
+         - if (user) {
+         - if (canCreate(user)) {
+           li 
+            a(href="/projects/create") #{__('New project')}
+         - }
+         - } else { 
+         - if (stageCanCreate()) {
+          li
+           a(href="/login") #{__('Log in to create a project')}
+         - } else {
+          li
+           a(href="/login") #{__('Login')}
+         - }
+         - }
+.container
+  #projects.row
+    each project, index in projects
       include project
         

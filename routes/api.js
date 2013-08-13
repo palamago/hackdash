@@ -7,7 +7,9 @@ var passport = require('passport')
   , request = require('superagent');
 
 var User = mongoose.model('User')
-  , Project = mongoose.model('Project');
+  , Project = mongoose.model('Project')
+  , Content = mongoose.model('Content')
+  , Category = mongoose.model('Category');
 
 module.exports = function(app) {
   app.locals.canCreate = userCanCreate
@@ -17,14 +19,19 @@ module.exports = function(app) {
   app.post('/api/projects/create', isAuth, canCreate, validateProject, saveProject, notify(app, 'project_created'), gracefulRes());
   app.get('/api/projects/remove/:project_id', isAuth, canRemove, removeProject, notify(app, 'project_removed'), gracefulRes());
   app.get('/api/projects/create', isAuth, canCreate, setViewVar('statuses', app.get('statuses')), render('new_project'));
-  app.post('/api/cover', isAuth, canEdit, uploadCover);
+  app.post('/api/cover', isAuth, uploadCover);
   app.get('/api/projects/edit/:project_id', isAuth, setViewVar('statuses', app.get('statuses')), canEdit, loadProject, render('edit'));
   app.post('/api/projects/edit/:project_id', isAuth, canEdit, validateProject, updateProject, notify(app, 'project_edited'), gracefulRes());
   app.get('/api/projects/join/:project_id', isAuth, joinProject, followProject, loadProject, notify(app, 'project_join'), sendMail(app, 'join'), gracefulRes()); 
   app.get('/api/projects/leave/:project_id', isAuth, isProjectMember, leaveProject, loadProject, notify(app, 'project_leave'), gracefulRes()); 
   app.get('/api/projects/follow/:project_id', isAuth, followProject, loadProject, notify(app, 'project_follow'), gracefulRes()); 
   app.get('/api/projects/unfollow/:project_id', isAuth, isProjectFollower, unfollowProject, loadProject, notify(app, 'project_unfollow'), gracefulRes()); 
-  app.get('/api/p/:project_id', loadProject, canView, render('project_full'));
+  app.get('/api/p/:project_id', loadProject, render('project_full'));
+
+  app.get('/api/contents', loadContents, render('contents'));
+  app.get('/api/c/:content_id', loadContent, render('content_full'));
+  app.get('/api/contents/edit/:content_id', isAuth, isAdmin, loadContent, render('edit_content'));
+  app.post('/api/contents/edit/:content_id', isAuth, isAdmin, validateContent, updateContent, notify(app, 'content_edited'), gracefulResCont());
   app.get('/api/search', prepareSearchQuery, loadProjects, render('projects'));
   app.get('/api/users/profile', isAuth, loadUser, userIsProfile, render('edit_profile'));
   app.get('/api/users/:user_id', loadUser, findUser, render('profile'));
@@ -178,6 +185,14 @@ var isAuth = function(req, res, next){
   (req.isAuthenticated()) ? next() : res.send(403);
 };
 
+/**
+ * User is dashboard admin
+ */
+
+var isAdmin = function(req, res, next) {
+	if(req.user.is_admin) next();
+	else res.send(403);
+};
 /*
  * Check if current user can create Projects
  */
@@ -287,11 +302,122 @@ var loadProject = function(req, res, next) {
   });
 };
 
+
+/*
+ * Load all contents
+ */
+
+var loadContents = function(req, res, next) {
+  Content.find(req.query || {})
+  .exec(function(err, contents) {
+    if(err) return res.send(500);
+    res.locals.contents = contents;
+    res.locals.user = req.user;
+    res.locals.canView = true;
+    res.locals.canEdit = req.user.is_admin;
+    res.locals.canRemove = req.user.is_admin;
+    res.locals.userExists = userExistsInArray;
+    next();
+  });
+};
+
+/*
+ * Load specific content
+ */
+
+var loadContent = function(req, res, next) {
+  Content.findById(req.params.content_id)
+  .exec(function(err, content) {
+    if(err || !content) return res.send(500);
+    res.locals.content = content;
+    res.locals.user = req.user;
+    res.locals.canEdit = true;
+    res.locals.canRemove = true;
+    res.locals.disqus_shortname = config.disqus_shortname;
+    res.locals.userExists = true;
+    next();
+  });
+};
+
 var userExistsInArray = function(user, arr){
   return _.find(arr, function(u){
     return (u.id == user.id);
   });
 };
+
+
+/*
+ * Check content fields
+ */
+
+var validateContent = function(req, res, next) {
+  if(req.body.title && req.body.description) next();
+  else {
+    res.send(500, "Content Title and Description fields must be complete.");
+  }
+};
+
+/*
+ * Save new content
+ */
+
+var saveContent = function(req, res, next) {
+  var content = new Content({
+      title: req.body.title
+    , abstract: req.body.abstract
+    , description: req.body.description
+    , link: req.body.link
+    , tags: req.body.tags && req.body.tags.length ? req.body.tags.split(',') : []
+    , created_at: Date.now()
+    , creator: req.user._id
+    , cover: req.body.cover
+  });
+
+  content.save(function(err, content){
+    if(err) return res.send(500); 
+    res.locals.content = content;
+    next();
+  });
+};
+
+/*
+ * Remove a content
+ */
+
+var removeContent = function(req, res, next) {
+  res.locals.content = {id: req.content.id, title: req.content.title};
+
+  req.content.remove(function(err){
+    if(err) res.send(500);
+    else next();
+  });
+};
+
+/*
+ * Update existing content
+ */
+
+var updateContent = function(req, res, next) {
+  Content.findById(req.params.content_id)
+  .exec(function(err, content) {
+    if (err || !content) return res.send(404);
+    	console.log(content);
+	  //var content = req.content;
+	  content.title = req.body.title;
+	  content.description = req.body.description;
+	  content.link = req.body.link || content.link;
+	  content.tags = (req.body.tags && req.body.tags.split(','));
+	  content.cover = req.body.cover || content.cover;
+
+	  content.save(function(err, content){
+		if(err) return res.send(500);
+		res.locals.content = content;
+		next();
+	  });
+  });
+
+};
+
 
 /*
  * Load searched projects
@@ -330,13 +456,13 @@ var saveProject = function(req, res, next) {
       title: req.body.title
     , description: req.body.description
     , link: req.body.link
-    , status: req.body.status
     , tags: req.body.tags && req.body.tags.length ? req.body.tags.split(',') : []
     , created_at: Date.now()
     , leader: req.user._id
     , followers: [req.user._id]
     , contributors: [req.user._id]
     , cover: req.body.cover
+    , video: req.body.video
   });
 
   project.save(function(err, project){
@@ -368,10 +494,11 @@ var updateProject = function(req, res, next) {
 
   project.title = req.body.title || project.title;
   project.description = req.body.description || project.description;
-  project.link = req.body.link || project.link;
+  project.link = req.body.link;
   project.status = req.body.status || project.status;
   project.cover = req.body.cover || project.cover;
-  project.tags = (req.body.tags && req.body.tags.split(',')) || project.tags;
+  project.video = req.body.video;
+  project.tags = (req.body.tags && req.body.tags.split(','));
 
   project.save(function(err, project){
     if(err) return res.send(500);
@@ -387,11 +514,11 @@ var updateProject = function(req, res, next) {
 var uploadCover = function(req, res, next) {
   var cover = (req.files && req.files.cover && req.files.cover.type.indexOf('image/') != -1 
     && '/uploads/' + req.files.cover.path.split('/').pop() + '.' + req.files.cover.name.split('.').pop());
-
+  console.log(cover);
   if(req.files && req.files.cover && req.files.cover.type.indexOf('image/') != -1) {
     var tmp_path = req.files.cover.path
-      , target_path = './public' + cover;
-
+      , target_path = __dirname+'/../public' + cover;
+    console.log(tmp_path);
     fs.rename(tmp_path, target_path, function(err) {
       if (err) throw err;
       fs.unlink(tmp_path, function() {
@@ -477,6 +604,16 @@ var unfollowProject = function(req, res, next) {
 var gracefulRes = function(msg) {
   return function(req, res) {
     res.json(msg && {msg: msg} ||{err: null, id: res.locals.project.id});
+  };
+};
+
+/*
+ * Return something good for content
+ */
+
+var gracefulResCont = function(msg) {
+  return function(req, res) {
+    res.json(msg && {msg: msg} ||{err: null, id: res.locals.content.id});
   };
 };
 

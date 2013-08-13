@@ -5,7 +5,10 @@ var passport = require('passport')
 
 var User = mongoose.model('User')
   , Project = mongoose.model('Project')
+  , Content = mongoose.model('Content')
   , Dashboard = mongoose.model('Dashboard');
+
+
 
 module.exports = function(app) {
 
@@ -17,6 +20,7 @@ module.exports = function(app) {
     loadUser, 
     loadProviders,
     loadDashboard,
+    loadContents,
     setViewVar('statuses', app.get('statuses')),
     setViewVar('disqus_shortname', config.disqus_shortname),
     render('dashboard')
@@ -39,6 +43,7 @@ module.exports = function(app) {
   app.get('/projects/create', dashboardStack);
   app.get('/projects/edit/:project_id', dashboardStack);
   app.get('/p/:project_id', dashboardStack);
+  app.get('/c/:content_id', loadContent, dashboardStack);
   app.get('/search', dashboardStack);
   app.get('/logout', logout, redirect('/'));
   
@@ -104,6 +109,15 @@ var isAuth = function(req, res, next){
   (req.isAuthenticated()) ? next() : res.send(403);
 };
 
+/**
+ * User is dashboard admin
+ */
+
+var isAdmin = function(req, res, next) {
+	if(req.user.is_admin) next();
+	else res.send(403);
+};
+
 /*
  * Makes vars available to views
  */
@@ -137,6 +151,32 @@ var loadProject = function(req, res, next) {
     if(err || !project) return res.send(500);
     res.locals.project = project;
     res.locals.user = req.user;
+    next();
+  });
+};
+/*
+ * Load specific content
+ */
+
+var loadContent = function(req, res, next) {
+  Content.findById(req.params.content_id)
+  .exec(function(err, content) {
+    if(err || !content) return res.send(500);
+    res.locals.content = content;
+    next();
+  });
+};
+
+
+var loadContents = function(req, res, next) {
+  Content.find(req.query || {})
+  .exec(function(err, contents) {
+    if(err) return res.send(500);
+    res.locals.contents = contents;
+    res.locals.user = req.user;
+    res.locals.canView = true;
+    res.locals.canEdit = false;
+    res.locals.canRemove = false;
     next();
   });
 };

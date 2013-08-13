@@ -7,11 +7,17 @@
 
   var $projects = $('#projects')
     , $project = $('.project')
+    , $contents = $('#contents')
+    , $listContents = $('#listContents')
+    , $content = $('.content')
     , $ajaxForm = $('.ajaxForm')
     , $newProject = $('#newProject')
     , $editProject = $('#editProject')
     , $main = $('#main')
+    , $mainAdmin = $('#mainAdmin')
     , $fullProject = $('#fullProject')
+    , $newContent = $('#newContent')
+    , $editContent = $('#editContent')
     , $logIn = $('#logIn')
     , $modals = $('.modal')
     , $searchInput = $('#searchInput')
@@ -57,6 +63,15 @@
     .get('/api/search?' + ctx.querystring)
     .end(function(res){ 
       $main.html(res.body.html);
+      next();
+    }); 
+  };
+
+  var loadContents = function(ctx, next) {
+    request
+    .get('/api/contents')
+    .end(function(res){
+      $mainAdmin.html(res.body.html);
       next();
     }); 
   };
@@ -114,6 +129,7 @@
 
   var createProject = function(ctx) {
     $main.html($newProject.html());
+    $newContent.addClass('hide');
     initSelect2();
     initImageDrop();
 
@@ -182,6 +198,15 @@
     });
   };
 
+  var contentInfo = function(ctx) {
+    request
+    .get('/api/c/' + ctx.params.content_id)
+    .end(function(res){
+      $main.html(res.body.html);
+      $('.tooltips').tooltip({});
+    });
+  };
+
   var followProject = function(ctx) {
     request
     .get('/api/projects/follow/' + ctx.params.project_id)
@@ -197,6 +222,52 @@
       page('/');
     });
   };
+
+  var createContent = function(ctx) {
+    $mainAdmin.html($newContent.html());
+    $newProject.addClass('hide');
+    initSelect2();
+    initImageDrop();
+    $('.ajaxFormContent').ajaxForm({
+      error: formError,
+      success: formSuccessContents,
+      resetForm: true,
+      beforeSubmit: formValidate
+    });
+
+  };
+
+  var editContent = function(ctx) {
+    superagent
+    .get('/api/contents/edit/' + ctx.params.content_id)
+    .end(function(res){
+    $('.tooltip').remove();
+      $mainAdmin.html(res.body.html);
+      initSelect2();
+      initImageDrop();
+
+      $('.ajaxFormContent').ajaxForm({
+        error: formError,
+        success: formSuccessContents,
+        resetForm: true,
+        beforeSubmit: formValidate
+      });
+
+    });
+  };
+
+  var removeContent = function(ctx) {
+    if (window.confirm("This action will remove the content. Are you sure?")){
+      superagent
+        .get('/admin/content/remove/' + ctx.params.content_id)
+        .end(function(res){
+          page('/');
+        });
+    }
+    else 
+      page('/');
+  };
+
 
   var getMyProfile = function() {
     request
@@ -246,9 +317,14 @@
   page('/projects/unfollow/:project_id', unfollowProject);
   page('/projects/join/:project_id', joinProject);
   page('/projects/leave/:project_id', leaveProject);
+  page('/contents/', loadContents);
+  page('/admin/content/create', createContent);
+  page('/admin/content/edit/:content_id', editContent);
+  page('/admin/content/remove/:content_id', removeContent);
   page('/users/profile', getMyProfile);
   page('/users/:user_id', getUserProfile);
   page('/p/:project_id', projectInfo);
+  page('/c/:content_id', contentInfo);
   page('/auth/persona', personaLogin);
 
   page();
@@ -299,8 +375,14 @@
     $dragdrop.css('background', 'none').children('input').show(); 
     page('/');
   };
+  var formSuccessContents = function(){
+    cleanErrors();
+    $dragdrop.css('background', 'none').children('input').show(); 
+    page('/contents/');
+  };
   
   var formValidate = function(arr, $form, options){
+	
     for(var i = 0; i < arr.length; i++) {
       if(arr[i]['name'] === "title" && !arr[i].value.length) {
         formError("title");
@@ -365,6 +447,10 @@ text:project.language}]);
 
   $logo.click(function(){
     page.stop();
+  });  
+
+  $listContents.click(function(){
+    page('/contents/');
   });
   
   var cover_path = null;

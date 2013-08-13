@@ -1,0 +1,19 @@
+.content.tooltips.span4(title=content.title, data-id=content.id, data-name=content.title, data-date=("undefined" == typeof content.created_at) ? 0 : content.created_at, id="content-" + content.id, class=content.category)
+  .well
+    .cover.shadow 
+      if(content.cover)
+        img(src=content.cover, alt='#{content.title}')
+    .well-content
+      a(href='/c/'+content._id) 
+        h3 #{content.title}
+      p
+        | !{md(content.abstract)}
+    
+    .row-fluid.footer-box
+      .aging.activity.created_at
+        i.tooltips.icon-time.icon-1(rel="tooltip", title= moment(content.created_at).fromNow())
+
+      .pull-right.edit
+        if (true)
+          a.btn.btn-link(href='/admin/content/edit/'+content._id) #{__('Edit')}
+          a.btn.btn-link(href='/admin/content/remove/'+content._id) #{__('Remove')}

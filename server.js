@@ -53,6 +53,7 @@ app.get('config').db.url})
      res.render('500');
   });
   app.set('statuses',['brainstorming','wireframing','building','researching','prototyping','releasing']);
+  app.set('categories',['urbanism','data','health']);
 	app.locals.title = config.title;
 });
 
