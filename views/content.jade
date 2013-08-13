@@ -4,7 +4,7 @@
       if(content.cover)
         img(src=content.cover, alt='#{content.title}')
     .well-content
-      a(href='/contents/c/'+content._id) 
+      a(href='/c/'+content._id) 
         h3 #{content.title}
       p
         | !{md(content.abstract)}

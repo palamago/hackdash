@@ -40,7 +40,6 @@ module.exports = function(app) {
   app.get('/', checkProfile, dashboardStack);
   app.get('/live', liveStack);
   app.get('/login', dashboardStack);
-  app.get('/admin/content/edit/:content_id', dashboardStack);
   app.get('/projects/create', dashboardStack);
   app.get('/projects/edit/:project_id', dashboardStack);
   app.get('/p/:project_id', dashboardStack);
@@ -108,6 +107,15 @@ var loadUser = function(req, res, next) {
 
 var isAuth = function(req, res, next){
   (req.isAuthenticated()) ? next() : res.send(403);
+};
+
+/**
+ * User is dashboard admin
+ */
+
+var isAdmin = function(req, res, next) {
+	if(req.user.is_admin) next();
+	else res.send(403);
 };
 
 /*

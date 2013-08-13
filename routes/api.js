@@ -26,10 +26,12 @@ module.exports = function(app) {
   app.get('/api/projects/leave/:project_id', isAuth, isProjectMember, leaveProject, loadProject, notify(app, 'project_leave'), gracefulRes()); 
   app.get('/api/projects/follow/:project_id', isAuth, followProject, loadProject, notify(app, 'project_follow'), gracefulRes()); 
   app.get('/api/projects/unfollow/:project_id', isAuth, isProjectFollower, unfollowProject, loadProject, notify(app, 'project_unfollow'), gracefulRes()); 
-  app.get('/api/p/:project_id', loadProject, canView, render('project_full'));
+  app.get('/api/p/:project_id', loadProject, render('project_full'));
 
   app.get('/api/contents', loadContents, render('contents'));
   app.get('/api/c/:content_id', loadContent, render('content_full'));
+  app.get('/api/contents/edit/:content_id', isAuth, isAdmin, loadContent, render('edit_content'));
+  app.post('/api/contents/edit/:content_id', isAuth, isAdmin, validateContent, updateContent, notify(app, 'content_edited'), gracefulResCont());
   app.get('/api/search', prepareSearchQuery, loadProjects, render('projects'));
   app.get('/api/users/profile', isAuth, loadUser, userIsProfile, render('edit_profile'));
   app.get('/api/users/:user_id', loadUser, findUser, render('profile'));
@@ -183,6 +185,14 @@ var isAuth = function(req, res, next){
   (req.isAuthenticated()) ? next() : res.send(403);
 };
 
+/**
+ * User is dashboard admin
+ */
+
+var isAdmin = function(req, res, next) {
+	if(req.user.is_admin) next();
+	else res.send(403);
+};
 /*
  * Check if current user can create Projects
  */
@@ -334,6 +344,80 @@ var userExistsInArray = function(user, arr){
     return (u.id == user.id);
   });
 };
+
+
+/*
+ * Check content fields
+ */
+
+var validateContent = function(req, res, next) {
+  if(req.body.title && req.body.description) next();
+  else {
+    res.send(500, "Content Title and Description fields must be complete.");
+  }
+};
+
+/*
+ * Save new content
+ */
+
+var saveContent = function(req, res, next) {
+  var content = new Content({
+      title: req.body.title
+    , abstract: req.body.abstract
+    , description: req.body.description
+    , link: req.body.link
+    , tags: req.body.tags && req.body.tags.length ? req.body.tags.split(',') : []
+    , created_at: Date.now()
+    , creator: req.user._id
+    , cover: req.body.cover
+  });
+
+  content.save(function(err, content){
+    if(err) return res.send(500); 
+    res.locals.content = content;
+    next();
+  });
+};
+
+/*
+ * Remove a content
+ */
+
+var removeContent = function(req, res, next) {
+  res.locals.content = {id: req.content.id, title: req.content.title};
+
+  req.content.remove(function(err){
+    if(err) res.send(500);
+    else next();
+  });
+};
+
+/*
+ * Update existing content
+ */
+
+var updateContent = function(req, res, next) {
+  Content.findById(req.params.content_id)
+  .exec(function(err, content) {
+    if (err || !content) return res.send(404);
+    	console.log(content);
+	  //var content = req.content;
+	  content.title = req.body.title;
+	  content.description = req.body.description;
+	  content.link = req.body.link || content.link;
+	  content.tags = (req.body.tags && req.body.tags.split(','));
+	  content.cover = req.body.cover || content.cover;
+
+	  content.save(function(err, content){
+		if(err) return res.send(500);
+		res.locals.content = content;
+		next();
+	  });
+  });
+
+};
+
 
 /*
  * Load searched projects
@@ -520,6 +604,16 @@ var unfollowProject = function(req, res, next) {
 var gracefulRes = function(msg) {
   return function(req, res) {
     res.json(msg && {msg: msg} ||{err: null, id: res.locals.project.id});
+  };
+};
+
+/*
+ * Return something good for content
+ */
+
+var gracefulResCont = function(msg) {
+  return function(req, res) {
+    res.json(msg && {msg: msg} ||{err: null, id: res.locals.content.id});
   };
 };
 

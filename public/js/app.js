@@ -228,7 +228,6 @@
     $newProject.addClass('hide');
     initSelect2();
     initImageDrop();
-
     $('.ajaxFormContent').ajaxForm({
       error: formError,
       success: formSuccessContents,
@@ -240,14 +239,14 @@
 
   var editContent = function(ctx) {
     superagent
-    .get('/admin/content/edit/' + ctx.params.content_id)
+    .get('/api/contents/edit/' + ctx.params.content_id)
     .end(function(res){
     $('.tooltip').remove();
       $mainAdmin.html(res.body.html);
       initSelect2();
       initImageDrop();
 
-      $('.ajaxForm').ajaxForm({
+      $('.ajaxFormContent').ajaxForm({
         error: formError,
         success: formSuccessContents,
         resetForm: true,
@@ -320,7 +319,8 @@
   page('/projects/leave/:project_id', leaveProject);
   page('/contents/', loadContents);
   page('/admin/content/create', createContent);
-  page('/content/edit/:content_id', editContent);
+  page('/admin/content/edit/:content_id', editContent);
+  page('/admin/content/remove/:content_id', removeContent);
   page('/users/profile', getMyProfile);
   page('/users/:user_id', getUserProfile);
   page('/p/:project_id', projectInfo);
@@ -382,6 +382,7 @@
   };
   
   var formValidate = function(arr, $form, options){
+	
     for(var i = 0; i < arr.length; i++) {
       if(arr[i]['name'] === "title" && !arr[i].value.length) {
         formError("title");

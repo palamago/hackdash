@@ -4,32 +4,26 @@
  
    h3 #{__('Edit content')}
 
-   form.ajaxForm(action="/admin/content/edit/" + content.id, method="POST")
+   form.ajaxFormContent(action="/api/contents/edit/" + content.id, method="POST")
      .form-content
        .control-group
        .controls
         input(type="text", class="input-xlarge", placeholder="#{__('Title')}", name="title", value=content.title)
-
       .control-group
        .controls
         textarea(class="input-xlarge", id="description", name="description", rows="4", maxlength="400", placeholder="#{__('Description')}") #{content.description}
-
       .control-group
         .controls
           #dragdrop 
             p #{__('Drag Photo Here')}
             input(class="input-xlarge",type="file", name="cover_fall", id="cover_fall")        
-
       .control-group
        .controls
         input(class="input-xlarge", type="text", name="link", id="link", placeholder="#{__('Link')}", value=content.link)
-
       .control-group
        .controls
         input(class="input-xlarge", type="text", name="tags", id="tags", placeholder="#{__('Tags')}", value=content.tags.join(','))
-      
-    .form-actions
-
-      a.cancel.btn.btn-cancel(data-dismiss="modal") #{__('Cancel')}
-      button.btn.btn-custom(type="submit") #{__('Save changes')}
+      .form-actions
+        button.btn.primary.btn-success.pull-left(type="submit") #{__('Save changes')}
+        a.cancel.btn.btn-cancel.pull-right(data-dismiss="modal") #{__('Cancel')}
 

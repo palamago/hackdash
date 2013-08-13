@@ -28,8 +28,8 @@ module.exports = function(app) {
   app.get('/admin/c/:content_id', loadContent, isAdmin, loadDashboard, render('content_full'));
   //app.get('/admin/content/create', isAuth, isAdmin, loadDashboard, render('new_content'));
   app.post('/admin/content/create', isAuth, isAdmin, validateContent, saveContent, notify(app, 'content_created'), gracefulRes());
-  app.get('/admin/content/edit/:content_id', isAuth, isAdmin, dashboardStack, loadContent, render('edit_content'));
-  app.post('/admin/content/edit/:content_id', isAuth, isAdmin, validateContent, updateContent, notify(app, 'content_edited'), gracefulRes());
+  //app.get('/admin/content/edit/:content_id', isAuth, isAdmin, dashboardStack, loadContent, render('edit_content'));
+  //app.post('/admin/contents/edit/:content_id', isAuth, isAdmin, validateContent, updateContent, notify(app, 'content_edited'), gracefulRes());
   app.get('/admin/content/remove/:content_id', isAuth, isAdmin, removeContent, notify(app, 'content_removed'), gracefulRes());
 
 };
@@ -190,11 +190,17 @@ var saveContent = function(req, res, next) {
  */
 
 var removeContent = function(req, res, next) {
-  res.locals.content = {id: req.content.id, title: req.content.title};
+Content.findById(req.params.content_id)
+  .exec(function(err, content) {
+    if (err || !content) return res.send(404);
+      console.log(content);
+      req.content = content;
+	  res.locals.content = {id: req.content.id, title: req.content.title};
 
-  req.content.remove(function(err){
-    if(err) res.send(500);
-    else next();
+	  req.content.remove(function(err){
+		if(err) res.send(500);
+		else next();
+	  });
   });
 };
 
