@@ -1,0 +1,38 @@
+{
+  "name": "hackdash",
+  "version": "0.2.1",
+  "private": true,
+  "scripts": {
+    "start": "node server",
+    "test": "make test"
+  },
+  "dependencies": {
+    "express": "3.0.0",
+    "jade": "*",
+    "mongoose": "2.x.x",
+    "connect-mongo": "0.1.x",
+    "moment": "~2.1.0",
+    "markdown": "~0.4.0",
+    "commander": "~1.1.1",
+    "gravatar": "~1.0.6",
+    "underscore": "~1.4.4",
+    "superagent": "~0.10.0",
+    "socket.io": "~0.9.14",
+    "nodemailer": "~0.4.4",
+    "passport": "~0.1.17",
+    "passport-persona": "~0.1.7",
+    "passport-meetup": "~0.1.2",
+    "passport-github": "~0.1.5",
+    "passport-facebook": "~0.1.5",
+    "passport-twitter": "~0.1.5"
+  },
+  "devDependencies": {
+    "mocha": "~1.7.4",
+    "should": "~1.2.1",
+    "passport-http": "~0.2.1"
+  },
+  "engines": {
+    "node": "0.8.x",
+    "npm": "1.1.x"
+  }
+}

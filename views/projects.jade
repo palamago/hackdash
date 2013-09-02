@@ -1,0 +1,5 @@
+#projects.row
+  each project, index in projects
+    - if (canView(user, project))
+      include project
+        
